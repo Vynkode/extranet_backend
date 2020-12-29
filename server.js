@@ -59,6 +59,6 @@ app.get('/repairsclosed/:email', repairs.handleClosedRepairs(db));
 app.get('/createlogin', createlogin.handleCreateLogin(db, bcrypt));
 // app.get('/converter', converter.converterImage(db));
 
-app.listen(3000, () => {
-  console.log('app is running on port 3000');
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`app is running on port ${process.env.PORT}`);
 });
