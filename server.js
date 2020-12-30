@@ -30,7 +30,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  res.send(db.users);
+  res.send('El servidor está funcionando');
 });
 
 //Register and Sigin routes
