@@ -16,8 +16,10 @@ const db = knex({
   // connect to your own database here
   client: 'pg',
   connection: {
-    connectionString: procces.env.DATABASE_URL,
-    ssl: true,
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
     // host: 'postgresql-concentric-15283',
     // user: 'postgres',
     // password: 'gyzvek',
