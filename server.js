@@ -59,6 +59,9 @@ app.get('/repairsclosed/:email', repairs.handleClosedRepairs(db));
 //   image.handleApiCall(req, res);
 // });
 
+// Test connection
+app.get('test', test.test(db));
+
 //Create users from db for login
 app.get('/createlogin', createlogin.handleCreateLogin(db, bcrypt));
 // app.get('/converter', converter.converterImage(db));
