@@ -83,7 +83,7 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
     return res.status(200).json([count, repairs]);
   } catch (error) {
     console.log(error);
-    return res.status(400).json(['No se han encontrado reparaciones']);
+    return res.status(400).json(['No se han encontrado reparaciones', error]);
   }
 };
 
