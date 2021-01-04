@@ -4,28 +4,37 @@ const handleSignin = (db, bcrypt) => (req, res) => {
     return res.status(400).json('incorrect form submission');
   }
 
-  db.select(
-    'cd.codigo as id',
-    'c.codigo_contable as codigo',
-    'cd.nombre',
-    'c.razon_social',
-    'c.nif',
-    'cd.email',
-    'cd.telefono1',
-    'cd.calle',
-    'cd.distrito',
-    'cd.ciudad',
-    'cd.provincia',
-    'cd.contacto',
-    'cd.fax'
-  )
-    .from('clientes_direcciones as cd')
-    .where('cd.email', '=', email)
-    .join('clientes as c', 'cd.nombre', '=', 'c.nombre')
-    .then((user) => {
-      res.json(user);
-    })
-    .catch((err) => res.status(400).json(['wrong credentials', err]));
+  try {
+    const user = db
+      .select(
+        'cd.codigo',
+        'c.codigo_contable',
+        'cd.nombre',
+        'c.razon_social',
+        'c.nif',
+        'cd.email',
+        'cd.telefono1',
+        'cd.calle',
+        'cd.distrito',
+        'cd.ciudad',
+        'cd.provincia',
+        'cd.contacto',
+        'cd.fax'
+      )
+      .from('clientes_direcciones as cd')
+      .where('cd.email', '=', email)
+      .join('clientes as c', 'cd.nombre', '=', 'c.nombre')
+      .then((user) => {
+        res.json(user);
+      })
+      .catch((err) => res.status(400).json(['wrong credentials', err]));
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+
+  user.id = `${user.codigo_contable}/${user.codigo}`;
+
+  return res.status(200).json(user);
 
   //   db.select('email', 'hash')
   //     .from('login')
