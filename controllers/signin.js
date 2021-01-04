@@ -6,8 +6,8 @@ const handleSignin = (db, bcrypt) => (req, res) => {
 
   db.select('*')
     .from('clientes_direcciones as cd')
-    .where('email', '=', email)
-    // .join('clientes as c', 'cd.nombre', '=', 'c.nombre')
+    .where('cd.email', '=', email)
+    .join('clientes as c', 'cd.nombre', '=', 'c.nombre')
     .then((user) => {
       res.json(user);
     })
