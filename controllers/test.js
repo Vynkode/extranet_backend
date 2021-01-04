@@ -13,7 +13,7 @@ const clientes = (db) => (req, res) => {
 };
 
 const direcciones = (db) => (req, res) => {
-  const email = req.params;
+  const { email } = req.params;
   db('clientes_direcciones')
     .select('*')
     .where('email', '=', email)
