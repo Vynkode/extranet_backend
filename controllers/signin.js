@@ -1,11 +1,11 @@
-const handleSignin = (db, bcrypt) => (req, res) => {
+const handleSignin = (db, bcrypt) => async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json('incorrect form submission');
   }
 
   try {
-    const user = db
+    const user = await db
       .select(
         'cd.codigo',
         'c.codigo_contable',
@@ -23,18 +23,16 @@ const handleSignin = (db, bcrypt) => (req, res) => {
       )
       .from('clientes_direcciones as cd')
       .where('cd.email', '=', email)
-      .join('clientes as c', 'cd.nombre', '=', 'c.nombre')
-      .then((user) => {
-        res.json(user);
-      })
-      .catch((err) => res.status(400).json(['wrong credentials', err]));
+      .join('clientes as c', 'cd.nombre', '=', 'c.nombre');
+    // .then((user) => {
+    //   res.json(user);
+    // })
+    // .catch((err) => res.status(400).json(['wrong credentials', err]));
+    user.id = `${user.codigo_contable}/${user.codigo}`;
+    return res.status(200).json(user);
   } catch (err) {
     return res.status(400).json(err);
   }
-
-  user.id = `${user.codigo_contable}/${user.codigo}`;
-
-  return res.status(200).json(user);
 
   //   db.select('email', 'hash')
   //     .from('login')
