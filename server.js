@@ -60,7 +60,7 @@ app.get('/repairsclosed/:email', repairs.handleClosedRepairs(db));
 // });
 
 // Test connection
-app.get('test', test.test(db));
+app.get('/test', test.test(db));
 
 //Create users from db for login
 app.get('/createlogin', createlogin.handleCreateLogin(db, bcrypt));
