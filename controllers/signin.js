@@ -28,7 +28,7 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
     //   res.json(user);
     // })
     // .catch((err) => res.status(400).json(['wrong credentials', err]));
-    user.id = `${user.codigo_contable}/${user.codigo}`;
+    user[0].id = `${user[0].codigo_contable}/${user[0].codigo}`;
     // user[prueba] = 'hola';
     return res.status(200).json(user[0]);
   } catch (err) {
