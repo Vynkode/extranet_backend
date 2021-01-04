@@ -19,4 +19,8 @@ const direcciones = (db) => (req, res) => {
     .catch((err) => res.status(400).json(err));
 };
 
-module.exports = { reparaciones: reparaciones, clientes: clientes, direcciones: direcciones };
+module.exports = {
+  reparaciones: reparaciones,
+  clientes: clientes,
+  direcciones: direcciones,
+};
