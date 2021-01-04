@@ -4,7 +4,7 @@ const handleSignin = (db, bcrypt) => (req, res) => {
     return res.status(400).json('incorrect form submission');
   }
 
-  db.select('*')
+  db.select('cd.codigo as id', 'cd.nombre', 'cd.email')
     .from('clientes_direcciones as cd')
     .where('cd.email', '=', email)
     .join('clientes as c', 'cd.nombre', '=', 'c.nombre')
