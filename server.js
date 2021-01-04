@@ -61,7 +61,9 @@ app.get('/repairsclosed/:email', repairs.handleClosedRepairs(db));
 // });
 
 // Test connection
-app.get('/test', test.test(db));
+app.get('/reparaciones', test.reparaciones(db));
+app.get('./clientes', test.clientes(db));
+app.get('./direcciones', test.direcciones(db));
 
 //Create users from db for login
 app.get('/createlogin', createlogin.handleCreateLogin(db, bcrypt));
