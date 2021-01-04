@@ -11,6 +11,7 @@ const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 const converter = require('./controllers/converter');
 const createlogin = require('./controllers/createlogin');
+const test = require('./test');
 
 const db = knex({
   // connect to your own database here
