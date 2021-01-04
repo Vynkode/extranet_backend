@@ -17,7 +17,7 @@ const direcciones = (db) => (req, res) => {
   db('clientes_direcciones')
     .select('*')
     .where('email', '=', email)
-    .then((data) => res.json(data))
+    .then((data) => res.json([data, email]))
     .catch((err) => res.status(400).json(err));
 };
 
