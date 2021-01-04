@@ -13,8 +13,10 @@ const clientes = (db) => (req, res) => {
 };
 
 const direcciones = (db) => (req, res) => {
+  const email = req.params;
   db('clientes_direcciones')
     .select('*')
+    .where('email', '=', email)
     .then((data) => res.json(data))
     .catch((err) => res.status(400).json(err));
 };
