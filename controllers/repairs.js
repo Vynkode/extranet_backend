@@ -139,7 +139,7 @@ const handleClosedRepairs = (db) => async (req, res) => {
         element.tipo_reparacion = 'Reclamación';
       }
 
-      if (element.presupuestar === '' || element.presupuestar === 'N') {
+      if (element.presupuestar === '' || element.presupuestar === 'N' || !element.presupuestar) {
         element.presupuestar = 'No';
       } else {
         element.presupuestar = 'Sí';

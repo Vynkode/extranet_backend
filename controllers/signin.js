@@ -31,10 +31,9 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
     user[0].id = `${user[0].codigo}/${user[0].codigo_contable.slice(3, -1)}`;
     delete user[0].codigo;
     delete user[0].codigo_contable;
-    // user[prueba] = 'hola';
     return res.status(200).json(user[0]);
   } catch (err) {
-    return res.status(400).json(err);
+    return res.status(400).json(['wrong credentials', err]);
   }
 
   //   db.select('email', 'hash')
