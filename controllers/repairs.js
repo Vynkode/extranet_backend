@@ -45,7 +45,7 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         element.f_reparacion = null;
       }
 
-      element.coste = parseInt(element.coste);
+      element.coste = parseFloat(element.coste);
 
       if (element.tipo_reparacion === '1') {
         element.tipo_reparacion = 'No Garantía';
