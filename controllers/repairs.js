@@ -133,7 +133,7 @@ const handleClosedRepairs = (db) => async (req, res) => {
         element.f_reparacion = null;
       }
 
-      element.coste = parseFloat(element.coste);
+      // element.coste = parseFloat(element.coste);
 
       if (element.tipo_reparacion === '1') {
         element.tipo_reparacion = 'No Garantía';
