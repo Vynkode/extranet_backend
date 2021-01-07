@@ -145,7 +145,7 @@ const handleClosedRepairs = (db) => async (req, res) => {
         element.presupuestar = 'Sí';
       }
       if (element.averia) {
-        element.averia = Buffer.from(element.averia).toString();
+        element.averia = element.averia.toLowerCase();
       } else {
         element.averia = '';
       }
