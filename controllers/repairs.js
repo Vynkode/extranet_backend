@@ -120,7 +120,11 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
 
       element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
 
-      // if(element.agencia === 'SEUR')
+      if (element.agencia === 'SEUR' || element.agencia === 'CORREOS' || element.agencia === 'ENVIALIA' || element.agencia === 'SUS MEDIOS' || element.agencia === 'SUS MEDI') {
+        element.agencia = 'ENVÍO';
+      } else {
+        element.agencia = 'RECOGIDA';
+      }
 
       if (element.f_entrega) {
         element.f_entrega = moment(element.f_entrega).format('DD/MM/YY');
@@ -253,6 +257,12 @@ const handleClosedRepairs = (db) => async (req, res) => {
       }
 
       element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
+
+      if (element.agencia === 'SEUR' || element.agencia === 'CORREOS' || element.agencia === 'ENVIALIA' || element.agencia === 'SUS MEDIOS' || element.agencia === 'SUS MEDI') {
+        element.agencia = 'ENVÍO';
+      } else {
+        element.agencia = 'RECOGIDA';
+      }
 
       if (element.f_entrega) {
         element.f_entrega = moment(element.f_entrega).format('DD/MM/YY');
