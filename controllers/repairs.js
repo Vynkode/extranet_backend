@@ -19,7 +19,7 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         'r.tipo_reparacion',
         'r.presupuestar',
         'r.f_reparacion',
-        'r.coste',
+        'r.f_base_imponible',
         'r.proceso',
         'r.observaciones',
         'r.averia',
@@ -45,7 +45,7 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         element.f_reparacion = null;
       }
 
-      element.coste = parseFloat(element.coste);
+      element.f_base_imponible = parseFloat(element.f_base_imponible);
 
       if (element.tipo_reparacion === '1') {
         element.tipo_reparacion = 'No Garantía';
@@ -107,7 +107,7 @@ const handleClosedRepairs = (db) => async (req, res) => {
         'r.tipo_reparacion',
         'r.presupuestar',
         'r.f_reparacion',
-        'r.coste',
+        'r.f_base_imponible',
         'r.proceso',
         'r.observaciones',
         'r.averia',
@@ -133,7 +133,7 @@ const handleClosedRepairs = (db) => async (req, res) => {
         element.f_reparacion = null;
       }
 
-      // element.coste = parseFloat(element.coste);
+      element.f_base_imponible = parseFloat(element.f_base_imponible);
 
       if (element.tipo_reparacion === '1') {
         element.tipo_reparacion = 'No Garantía';
