@@ -40,7 +40,6 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
     console.log(count);
 
     repairs.forEach((element) => {
-      element.p_base_imponible = parseFloat(element.p_base_imponible);
       if (element.foto_entrada) {
         element.foto_entrada = Buffer.from(element.foto_entrada).toString('base64');
       }
@@ -103,7 +102,7 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         element.presupuesto = '';
       }
 
-      // element.p_base_imponible = parseFloat(element.p_base_imponible).toFixed(2);
+      element.p_base_imponible = parseFloat(element.p_base_imponible).toFixed(2);
 
       if (element.f_reparacion) {
         element.f_reparacion = moment(element.f_reparacion).format('DD/MM/YY');
@@ -192,7 +191,7 @@ const handleClosedRepairs = (db) => async (req, res) => {
       }
 
       if (element.observaciones) {
-        element.observaciones = element.observaciones.toString().toLowerCase();
+        element.observaciones = element.observaciones.toLowerCase();
       } else {
         element.observaciones = '';
       }
@@ -222,7 +221,7 @@ const handleClosedRepairs = (db) => async (req, res) => {
       }
 
       if (element.presupuesto) {
-        element.presupuesto = element.presupuesto.toString().toLowerCase();
+        element.presupuesto = element.presupuesto.toLowerCase();
       } else {
         element.presupuesto = '';
       }
@@ -236,14 +235,12 @@ const handleClosedRepairs = (db) => async (req, res) => {
       }
 
       if (element.reparacion) {
-        element.reparacion = element.reparacion.toString().toLowerCase();
+        element.reparacion = element.reparacion.toLowerCase();
       } else {
         element.reparacion = '';
       }
 
       element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
-      // element.reparacion = Buffer.from(element.reparacion).toString();
-      // element.foto_entrada = new Buffer(element.foto.entrada, 'binary').toString('base64');
     });
     return res.status(200).json([count, repairs]);
   } catch (error) {
