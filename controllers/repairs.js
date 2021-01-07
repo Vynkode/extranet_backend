@@ -59,18 +59,18 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         element.presupuestar = 'Sí';
       }
       if (element.averia) {
-        element.averia = element.averia.toString();
+        element.averia = element.averia.toString().toLowerCase();
       } else {
         element.averia = '';
       }
       // element.averia = Buffer.from(element.averia).toString();
       if (element.observaciones) {
-        element.observaciones = Buffer.from(element.observaciones).toString();
+        element.observaciones = element.observaciones.toString().toLowerCase();
       } else {
         element.observaciones = '';
       }
       if (element.reparacion) {
-        element.reparacion = Buffer.from(element.reparacion).toString();
+        element.reparacion = element.reparacion.toString().toLowerCase();
       } else {
         element.reparacion = '';
       }
@@ -151,12 +151,12 @@ const handleClosedRepairs = (db) => async (req, res) => {
       }
       // element.averia = Buffer.from(element.averia).toString();
       if (element.observaciones) {
-        element.observaciones = Buffer.from(element.observaciones).toString();
+        element.observaciones = element.observaciones.toString().toLowerCase();
       } else {
         element.observaciones = '';
       }
       if (element.reparacion) {
-        element.reparacion = Buffer.from(element.reparacion).toString();
+        element.reparacion = element.reparacion.toString().toLowerCase();
       } else {
         element.reparacion = '';
       }
