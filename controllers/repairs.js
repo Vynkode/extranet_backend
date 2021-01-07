@@ -40,7 +40,7 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
     console.log(count);
 
     repairs.forEach((element) => {
-      element.p_base_imponible = parseFloat(element.p_base_imponible).toFixed(2);
+      element.p_base_imponible = parseFloat(element.p_base_imponible);
       if (element.foto_entrada) {
         element.foto_entrada = Buffer.from(element.foto_entrada).toString('base64');
       }
