@@ -45,6 +45,8 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         element.f_reparacion = null;
       }
 
+      element.coste = element.coste.toFixed();
+
       if (element.tipo_reparacion === '1') {
         element.tipo_reparacion = 'No Garantía';
       } else if (element.tipo_reparacion === '2') {
