@@ -165,11 +165,11 @@ const handleClosedRepairs = (db) => async (req, res) => {
         element.presupuestar = 'Sí';
       }
       // element.averia = Buffer.from(element.averia).toString();
-      // if (element.observaciones) {
-      //   element.observaciones = element.observaciones.toString().toLowerCase();
-      // } else {
-      //   element.observaciones = '';
-      // }
+      if (element.observaciones) {
+        element.observaciones = element.observaciones.toString().toLowerCase();
+      } else {
+        element.observaciones = '';
+      }
 
       if (element.reparacion) {
         element.reparacion = element.reparacion.toString().toLowerCase();
