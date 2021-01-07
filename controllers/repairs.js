@@ -100,19 +100,24 @@ const handleClosedRepairs = (db) => async (req, res) => {
       .select(
         'r.numero',
         'r.su_referencia',
+        'r.foto_entrada',
+        'r.tipo_reparacion',
         'r.f_entrada',
         'r.marca',
         'r.modelo',
         'r.tipo_aparato',
-        'r.tipo_reparacion',
+        'r.averia',
+        'r.observaciones',
         'r.presupuestar',
+        'r.f_presupuesto',
+        'r.f_respuesta_ppto',
+        'r.rechazado',
+        'r.presupuesto',
+        'r.p_base_imponible',
         'r.f_reparacion',
         'r.f_base_imponible',
-        'r.proceso',
-        'r.observaciones',
-        'r.averia',
         'r.reparacion',
-        'r.foto_entrada'
+        'r.proceso'
       )
       .join('clientes_direcciones as cd', function () {
         this.on('cd.codigo', '=', 'r.codigo_envio').andOn('cd.nombre', '=', 'r.nombre');
@@ -126,14 +131,9 @@ const handleClosedRepairs = (db) => async (req, res) => {
     console.log(count);
 
     repairs.forEach((element) => {
-      element.f_entrada = moment(element.f_entrada).format('DD/MM/YY');
-      if (element.f_reparacion) {
-        element.f_reparacion = moment(element.f_reparacion).format('DD/MM/YY');
-      } else {
-        element.f_reparacion = null;
+      if (element.foto_entrada) {
+        element.foto_entrada = Buffer.from(element.foto_entrada).toString('base64');
       }
-
-      element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
 
       if (element.tipo_reparacion === '1') {
         element.tipo_reparacion = 'No Garantía';
@@ -143,15 +143,26 @@ const handleClosedRepairs = (db) => async (req, res) => {
         element.tipo_reparacion = 'Reclamación';
       }
 
+      element.f_entrada = moment(element.f_entrada).format('DD/MM/YY');
+
+      if (element.f_reparacion) {
+        element.f_reparacion = moment(element.f_reparacion).format('DD/MM/YY');
+      } else {
+        element.f_reparacion = null;
+      }
+
+      // if (element.averia) {
+      //   element.averia = element.averia.toLowerCase();
+      // } else {
+      //   element.averia = '';
+      // }
+
+      element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
+
       if (element.presupuestar === '' || element.presupuestar === 'N' || !element.presupuestar) {
         element.presupuestar = 'No';
       } else {
         element.presupuestar = 'Sí';
-      }
-      if (element.averia) {
-        element.averia = element.averia.toLowerCase();
-      } else {
-        element.averia = '';
       }
       // element.averia = Buffer.from(element.averia).toString();
       if (element.observaciones) {
@@ -163,9 +174,6 @@ const handleClosedRepairs = (db) => async (req, res) => {
         element.reparacion = element.reparacion.toString().toLowerCase();
       } else {
         element.reparacion = '';
-      }
-      if (element.foto_entrada) {
-        element.foto_entrada = Buffer.from(element.foto_entrada).toString('base64');
       }
       // element.reparacion = Buffer.from(element.reparacion).toString();
       // element.foto_entrada = new Buffer(element.foto.entrada, 'binary').toString('base64');
