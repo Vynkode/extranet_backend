@@ -70,7 +70,7 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
       }
 
       if (element.observaciones) {
-        element.observaciones = element.observaciones.toString().toLowerCase();
+        element.observaciones = element.observaciones.toLowerCase();
       } else {
         element.observaciones = '';
       }
@@ -100,12 +100,12 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
       }
 
       if (element.presupuesto) {
-        element.presupuesto = element.presupuesto.toString().toLowerCase();
+        element.presupuesto = element.presupuesto.toLowerCase();
       } else {
         element.presupuesto = '';
       }
 
-      element.p_base_imponible = parseFloat(element.p_base_imponible).toFixed(2);
+      // element.p_base_imponible = parseFloat(element.p_base_imponible).toFixed(2);
 
       if (element.f_reparacion) {
         element.f_reparacion = moment(element.f_reparacion).format('DD/MM/YY');
