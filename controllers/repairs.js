@@ -59,7 +59,7 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         element.presupuestar = 'Sí';
       }
       if (element.averia) {
-        element.averia = Buffer.from(element.averia).toString();
+        element.averia = element.averia.toString();
       } else {
         element.averia = '';
       }
