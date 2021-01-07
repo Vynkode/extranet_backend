@@ -3,9 +3,6 @@ const moment = require('moment');
 
 const handleWorkshopRepairs = (db) => async (req, res) => {
   const { email } = req.params;
-  // if (!email || !password) {
-  //   return res.status(400).json('incorrect form submission');
-  // }
 
   try {
     const repairs = await db('reparaciones as r')
@@ -43,6 +40,7 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
     console.log(count);
 
     repairs.forEach((element) => {
+      element.p_base_imponible = parseFloat(element.p_base_imponible).toFixed(2);
       if (element.foto_entrada) {
         element.foto_entrada = Buffer.from(element.foto_entrada).toString('base64');
       }
@@ -120,8 +118,6 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
       }
 
       element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
-      // element.reparacion = Buffer.from(element.reparacion).toString();
-      // element.foto_entrada = new Buffer(element.foto.entrada, 'binary').toString('base64');
     });
     return res.status(200).json([count, repairs]);
   } catch (error) {
@@ -132,9 +128,6 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
 
 const handleClosedRepairs = (db) => async (req, res) => {
   const { email } = req.params;
-  // if (!email || !password) {
-  //   return res.status(400).json('incorrect form submission');
-  // }
 
   try {
     const repairs = await db('reparaciones as r')
