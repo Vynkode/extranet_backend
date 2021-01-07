@@ -45,7 +45,7 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         element.f_reparacion = null;
       }
 
-      element.f_base_imponible = parseFloat(element.f_base_imponible);
+      element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
 
       if (element.tipo_reparacion === '1') {
         element.tipo_reparacion = 'No Garantía';
@@ -133,7 +133,7 @@ const handleClosedRepairs = (db) => async (req, res) => {
         element.f_reparacion = null;
       }
 
-      element.f_base_imponible = parseFloat(element.f_base_imponible);
+      element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
 
       if (element.tipo_reparacion === '1') {
         element.tipo_reparacion = 'No Garantía';
