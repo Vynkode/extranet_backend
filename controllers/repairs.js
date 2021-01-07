@@ -12,19 +12,24 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
       .select(
         'r.numero',
         'r.su_referencia',
+        'r.foto_entrada',
+        'r.tipo_reparacion',
         'r.f_entrada',
         'r.marca',
         'r.modelo',
         'r.tipo_aparato',
-        'r.tipo_reparacion',
-        'r.presupuestar',
-        'r.f_reparacion',
-        'r.f_base_imponible',
-        'r.proceso',
-        'r.observaciones',
         'r.averia',
+        'r.observaciones',
+        'r.presupuestar',
+        'r.f_presupuesto',
+        'r.f_respuesta_ppto',
+        'r.rechazado',
+        'r.presupuesto',
+        'r.p_base_imponible',
+        'r.f_reparacion',
         'r.reparacion',
-        'r.foto_entrada'
+        'r.f_base_imponible',
+        'r.proceso'
       )
       .join('clientes_direcciones as cd', function () {
         this.on('cd.codigo', '=', 'r.codigo_envio').andOn('cd.nombre', '=', 'r.nombre');
@@ -38,14 +43,9 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
     console.log(count);
 
     repairs.forEach((element) => {
-      element.f_entrada = moment(element.f_entrada).format('DD/MM/YY');
-      if (element.f_reparacion) {
-        element.f_reparacion = moment(element.f_reparacion).format('DD/MM/YY');
-      } else {
-        element.f_reparacion = null;
+      if (element.foto_entrada) {
+        element.foto_entrada = Buffer.from(element.foto_entrada).toString('base64');
       }
-
-      element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
 
       if (element.tipo_reparacion === '1') {
         element.tipo_reparacion = 'No Garantía';
@@ -55,30 +55,71 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         element.tipo_reparacion = 'Reclamación';
       }
 
-      if (element.presupuestar === '' || element.presupuestar === 'N') {
-        element.presupuestar = 'No';
+      element.f_entrada = moment(element.f_entrada).format('DD/MM/YY');
+
+      if (element.f_reparacion) {
+        element.f_reparacion = moment(element.f_reparacion).format('DD/MM/YY');
       } else {
-        element.presupuestar = 'Sí';
+        element.f_reparacion = null;
       }
+
       if (element.averia) {
-        element.averia = element.averia.toString().toLowerCase();
+        element.averia = element.averia.toLowerCase();
       } else {
         element.averia = '';
       }
-      // element.averia = Buffer.from(element.averia).toString();
+
       if (element.observaciones) {
         element.observaciones = element.observaciones.toString().toLowerCase();
       } else {
         element.observaciones = '';
       }
+
+      if (element.presupuestar === '' || element.presupuestar === 'N' || !element.presupuestar) {
+        element.presupuestar = 'No';
+      } else {
+        element.presupuestar = 'Sí';
+      }
+
+      if (element.f_presupuesto) {
+        element.f_presupuesto = moment(element.f_presupuesto).format('DD/MM/YY');
+      } else {
+        element.f_presupuesto = null;
+      }
+
+      if (element.f_respuesta_ppto) {
+        element.f_respuesta_ppto = moment(element.f_respuesta_ppto).format('DD/MM/YY');
+      } else {
+        element.f_respuesta_ppto = null;
+      }
+
+      if (element.rechazado === '' || element.rechazado === 'N' || !element.rechazado) {
+        element.rechazado = 'No';
+      } else {
+        element.rechazado = 'Sí';
+      }
+
+      if (element.presupuesto) {
+        element.presupuesto = element.presupuesto.toString().toLowerCase();
+      } else {
+        element.presupuesto = '';
+      }
+
+      element.p_base_imponible = parseFloat(element.p_base_imponible).toFixed(2);
+
+      if (element.f_reparacion) {
+        element.f_reparacion = moment(element.f_reparacion).format('DD/MM/YY');
+      } else {
+        element.f_reparacion = null;
+      }
+
       if (element.reparacion) {
         element.reparacion = element.reparacion.toString().toLowerCase();
       } else {
         element.reparacion = '';
       }
-      if (element.foto_entrada) {
-        element.foto_entrada = Buffer.from(element.foto_entrada).toString('base64');
-      }
+
+      element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
       // element.reparacion = Buffer.from(element.reparacion).toString();
       // element.foto_entrada = new Buffer(element.foto.entrada, 'binary').toString('base64');
     });
@@ -115,8 +156,8 @@ const handleClosedRepairs = (db) => async (req, res) => {
         'r.presupuesto',
         'r.p_base_imponible',
         'r.f_reparacion',
-        'r.f_base_imponible',
         'r.reparacion',
+        'r.f_base_imponible',
         'r.proceso'
       )
       .join('clientes_direcciones as cd', function () {
@@ -151,24 +192,54 @@ const handleClosedRepairs = (db) => async (req, res) => {
         element.f_reparacion = null;
       }
 
-      // if (element.averia) {
-      //   element.averia = element.averia.toLowerCase();
-      // } else {
-      //   element.averia = '';
-      // }
+      if (element.averia) {
+        element.averia = element.averia.toLowerCase();
+      } else {
+        element.averia = '';
+      }
 
-      element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
+      if (element.observaciones) {
+        element.observaciones = element.observaciones.toString().toLowerCase();
+      } else {
+        element.observaciones = '';
+      }
 
       if (element.presupuestar === '' || element.presupuestar === 'N' || !element.presupuestar) {
         element.presupuestar = 'No';
       } else {
         element.presupuestar = 'Sí';
       }
-      // element.averia = Buffer.from(element.averia).toString();
-      if (element.observaciones) {
-        element.observaciones = element.observaciones.toString().toLowerCase();
+
+      if (element.f_presupuesto) {
+        element.f_presupuesto = moment(element.f_presupuesto).format('DD/MM/YY');
       } else {
-        element.observaciones = '';
+        element.f_presupuesto = null;
+      }
+
+      if (element.f_respuesta_ppto) {
+        element.f_respuesta_ppto = moment(element.f_respuesta_ppto).format('DD/MM/YY');
+      } else {
+        element.f_respuesta_ppto = null;
+      }
+
+      if (element.rechazado === '' || element.rechazado === 'N' || !element.rechazado) {
+        element.rechazado = 'No';
+      } else {
+        element.rechazado = 'Sí';
+      }
+
+      if (element.presupuesto) {
+        element.presupuesto = element.presupuesto.toString().toLowerCase();
+      } else {
+        element.presupuesto = '';
+      }
+
+      element.p_base_imponible = parseFloat(element.p_base_imponible).toFixed(2);
+
+      if (element.f_reparacion) {
+        element.f_reparacion = moment(element.f_reparacion).format('DD/MM/YY');
+      } else {
+        element.f_reparacion = null;
       }
 
       if (element.reparacion) {
@@ -176,6 +247,8 @@ const handleClosedRepairs = (db) => async (req, res) => {
       } else {
         element.reparacion = '';
       }
+
+      element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
       // element.reparacion = Buffer.from(element.reparacion).toString();
       // element.foto_entrada = new Buffer(element.foto.entrada, 'binary').toString('base64');
     });
