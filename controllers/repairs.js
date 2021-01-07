@@ -26,6 +26,8 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         'r.f_reparacion',
         'r.reparacion',
         'r.f_base_imponible',
+        'r.f_entrega',
+        'r.agencia',
         'r.proceso'
       )
       .join('clientes_direcciones as cd', function () {
@@ -117,6 +119,14 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
       }
 
       element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
+
+      // if(element.agencia === 'SEUR')
+
+      if (element.f_entrega) {
+        element.f_entrega = moment(element.f_entrega).format('DD/MM/YY');
+      } else {
+        element.f_entrega = null;
+      }
     });
     return res.status(200).json([count, repairs]);
   } catch (error) {
@@ -150,6 +160,8 @@ const handleClosedRepairs = (db) => async (req, res) => {
         'r.f_reparacion',
         'r.reparacion',
         'r.f_base_imponible',
+        'r.f_entrega',
+        'r.agencia',
         'r.proceso'
       )
       .join('clientes_direcciones as cd', function () {
@@ -241,6 +253,12 @@ const handleClosedRepairs = (db) => async (req, res) => {
       }
 
       element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
+
+      if (element.f_entrega) {
+        element.f_entrega = moment(element.f_entrega).format('DD/MM/YY');
+      } else {
+        element.f_entrega = null;
+      }
     });
     return res.status(200).json([count, repairs]);
   } catch (error) {
