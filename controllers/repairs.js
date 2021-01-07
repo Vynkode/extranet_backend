@@ -26,8 +26,8 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         'r.f_reparacion',
         'r.reparacion',
         'r.f_base_imponible',
-        'r.f_entrega',
         'r.agencia',
+        'r.f_entrega',
         'r.proceso'
       )
       .join('clientes_direcciones as cd', function () {
@@ -164,8 +164,8 @@ const handleClosedRepairs = (db) => async (req, res) => {
         'r.f_reparacion',
         'r.reparacion',
         'r.f_base_imponible',
-        'r.f_entrega',
         'r.agencia',
+        'r.f_entrega',
         'r.proceso'
       )
       .join('clientes_direcciones as cd', function () {
