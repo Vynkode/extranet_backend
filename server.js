@@ -8,7 +8,7 @@ const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const repairs = require('./controllers/repairs');
 const profile = require('./controllers/profile');
-const image = require('./controllers/image');
+// const image = require('./controllers/image');
 const converter = require('./controllers/converter');
 const createlogin = require('./controllers/createlogin');
 const test = require('./controllers/test');
@@ -17,15 +17,15 @@ const db = knex({
   // connect to your own database here
   client: 'pg',
   connection: {
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-    // host: 'postgresql-concentric-15283',
-    // user: 'postgres',
-    // password: 'gyzvek',
-    // database: 'extranet',
-    // timezone: 'UTC',
+    // connectionString: process.env.DATABASE_URL,
+    // ssl: {
+    //   rejectUnauthorized: false,
+    // },
+    host: '127.0.0.1',
+    user: 'postgres',
+    password: 'gyzvek',
+    database: 'extranet',
+    timezone: 'UTC',
   },
 });
 
@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
   res.send('El servidor está funcionando');
 });
 
-//Register and Sigin routes
+//Register and Signin routes
 app.post('/signin', signin.handleSignin(db, bcrypt));
 app.post('/register', (req, res) => {
   register.handleRegister(req, res, db, bcrypt);
@@ -67,7 +67,8 @@ app.get('/direcciones/:email', test.direcciones(db));
 
 //Create users from db for login
 app.get('/createlogin', createlogin.handleCreateLogin(db, bcrypt));
-// app.get('/converter', converter.converterImage(db));
+
+app.get('/converter', converter.converterImage(db));
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`app is running on port ${process.env.PORT}`);

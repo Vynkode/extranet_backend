@@ -28,7 +28,8 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         'r.f_base_imponible',
         'r.agencia',
         'r.f_entrega',
-        'r.proceso'
+        'r.proceso',
+        'r.estado'
       )
       .join('clientes_direcciones as cd', function () {
         this.on('cd.codigo', '=', 'r.codigo_envio').andOn('cd.nombre', '=', 'r.nombre');
@@ -56,20 +57,16 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
 
       element.f_entrada = moment(element.f_entrada).format('DD/MM/YY');
 
-      if (element.f_reparacion) {
-        element.f_reparacion = moment(element.f_reparacion).format('DD/MM/YY');
-      } else {
-        element.f_reparacion = null;
-      }
-
-      if (element.averia) {
-        element.averia = element.averia.toLowerCase();
+      const averiaString = element.averia ? element.averia.toString() : '';
+      if (averiaString) {
+        element.averia = averiaString[0].toUpperCase() + averiaString.slice(1).toLowerCase();
       } else {
         element.averia = '';
       }
 
-      if (element.observaciones) {
-        element.observaciones = element.observaciones.toLowerCase();
+      const observacionesString = element.observaciones ? element.observaciones.toString() : '';
+      if (observacionesString) {
+        element.observaciones =  observacionesString[0].toUpperCase() + observacionesString.slice(1).toLowerCase();
       } else {
         element.observaciones = '';
       }
@@ -98,8 +95,9 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         element.rechazado = 'Sí';
       }
 
-      if (element.presupuesto) {
-        element.presupuesto = element.presupuesto.toLowerCase();
+      const presupuestoString = element.presupuesto ? element.presupuesto.toString() : '';
+      if (presupuestoString) {
+        element.presupuesto = presupuestoString[0].toUpperCase() + presupuestoString.slice(1).toLowerCase();
       } else {
         element.presupuesto = '';
       }
@@ -112,8 +110,9 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         element.f_reparacion = null;
       }
 
-      if (element.reparacion) {
-        element.reparacion = element.reparacion.toString().toLowerCase();
+      const reparacionString = element.reparacion ? element.reparacion.toString() : '';
+      if (reparacionString) {
+        element.reparacion = reparacionString[0].toUpperCase() + reparacionString.slice(1).toLowerCase();
       } else {
         element.reparacion = '';
       }
@@ -177,7 +176,7 @@ const handleClosedRepairs = (db) => async (req, res) => {
       .orderBy('r.f_entrada', 'desc');
 
     const count = repairs.length;
-    console.log(count);
+    // console.log(count);
 
     repairs.forEach((element) => {
       if (element.foto_entrada) {
@@ -194,20 +193,16 @@ const handleClosedRepairs = (db) => async (req, res) => {
 
       element.f_entrada = moment(element.f_entrada).format('DD/MM/YY');
 
-      if (element.f_reparacion) {
-        element.f_reparacion = moment(element.f_reparacion).format('DD/MM/YY');
-      } else {
-        element.f_reparacion = null;
-      }
-
-      if (element.averia) {
-        element.averia = element.averia.toLowerCase();
+      const averiaString = element.averia ? element.averia.toString() : '';
+      if (averiaString) {
+        element.averia = averiaString[0].toUpperCase() + averiaString.slice(1).toLowerCase();
       } else {
         element.averia = '';
       }
 
-      if (element.observaciones) {
-        element.observaciones = element.observaciones.toLowerCase();
+      const observacionesString = element.observaciones ? element.observaciones.toString() : '';
+      if (observacionesString) {
+        element.observaciones =  observacionesString[0].toUpperCase() + observacionesString.slice(1).toLowerCase();
       } else {
         element.observaciones = '';
       }
@@ -236,8 +231,9 @@ const handleClosedRepairs = (db) => async (req, res) => {
         element.rechazado = 'Sí';
       }
 
-      if (element.presupuesto) {
-        element.presupuesto = element.presupuesto.toLowerCase();
+      const presupuestoString = element.presupuesto ? element.presupuesto.toString() : '';
+      if (presupuestoString) {
+        element.presupuesto = presupuestoString[0].toUpperCase() + presupuestoString.slice(1).toLowerCase();
       } else {
         element.presupuesto = '';
       }
@@ -250,8 +246,9 @@ const handleClosedRepairs = (db) => async (req, res) => {
         element.f_reparacion = null;
       }
 
-      if (element.reparacion) {
-        element.reparacion = element.reparacion.toLowerCase();
+      const reparacionString = element.reparacion ? element.reparacion.toString() : '';
+      if (reparacionString) {
+        element.reparacion = reparacionString[0].toUpperCase() + reparacionString.slice(1).toLowerCase();
       } else {
         element.reparacion = '';
       }

@@ -19,7 +19,8 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
         'cd.ciudad',
         'cd.provincia',
         'cd.contacto',
-        'cd.fax'
+        'cd.fax',
+        'c.distribuidor'
       )
       .from('clientes_direcciones as cd')
       .where('cd.email', '=', email)
