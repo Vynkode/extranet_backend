@@ -41,7 +41,7 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
       //   this.on('ta.tipo_aparato', '=', 'r.tipo_aparato');
       // })
       .where((builder) => {
-        builder.where('cd.email', '=', email).where('r.operario', '!=', 'INMA').whereNull('r.f_reparacion');
+        builder.where('cd.email', '=', email).where('r.operario', '!=', 'INMA').where('r.proceso', '!=', '8');
       })
       .orderBy('r.f_entrada', 'desc');
 
@@ -174,13 +174,14 @@ const handleClosedRepairs = (db) => async (req, res) => {
         'r.f_base_imponible',
         'r.agencia',
         'r.f_entrega',
-        'r.proceso'
+        'r.proceso',
+        'r.estado'
       )
       .join('clientes_direcciones as cd', function () {
         this.on('cd.codigo', '=', 'r.codigo_envio').andOn('cd.nombre', '=', 'r.nombre');
       })
       .where((builder) => {
-        builder.where('cd.email', '=', email).where('r.operario', '!=', 'INMA').whereNotNull('r.f_reparacion');
+        builder.where('cd.email', '=', email).where('r.operario', '!=', 'INMA').where('r.proceso', '=', '8');
       })
       .orderBy('r.f_entrada', 'desc');
 
