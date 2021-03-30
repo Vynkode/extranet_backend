@@ -17,7 +17,8 @@ const db = knex({
   // connect to your own database here
   client: 'pg',
   connection: {
-    connectionString: process.env.DATABASE_URL,
+    // connectionString: process.env.DATABASE_URL,
+    connectionString: process.env.HEROKU_POSTGRESQL_SILVER_URL,
     ssl: {
       rejectUnauthorized: false,
     },
