@@ -11,6 +11,7 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         'r.su_referencia',
         'r.foto_entrada',
         'r.tipo_reparacion',
+        'r.fecha_compra',
         'r.f_entrada',
         'r.marca',
         'r.modelo',
@@ -24,16 +25,21 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         'r.presupuesto',
         'r.p_base_imponible',
         'r.f_reparacion',
+        'r.modelo_sustutucion',
         'r.reparacion',
         'r.f_base_imponible',
         'r.agencia',
         'r.f_entrega',
         'r.proceso',
-        'r.estado'
+        'r.estado',
+        // 'ta.accesorio1'
       )
       .join('clientes_direcciones as cd', function () {
         this.on('cd.codigo', '=', 'r.codigo_envio').andOn('cd.nombre', '=', 'r.nombre');
       })
+      // .join('tipos_de_aparatos as ta', function () {
+      //   this.on('ta.tipo_aparato', '=', 'r.tipo_aparato');
+      // })
       .where((builder) => {
         builder.where('cd.email', '=', email).where('r.operario', '!=', 'INMA').whereNull('r.f_reparacion');
       })
@@ -49,10 +55,13 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
 
       if (element.tipo_reparacion === '1') {
         element.tipo_reparacion = 'No Garantía';
+        element.fecha_compra = null
       } else if (element.tipo_reparacion === '2') {
         element.tipo_reparacion = 'Garantía';
+        element.fecha_compra = moment(element.fecha_compra).format('DD/MM/YY');
       } else if (element.tipo_reparacion === '3') {
         element.tipo_reparacion = 'Reclamación';
+        element.fecha_compra = null
       }
 
       element.f_entrada = moment(element.f_entrada).format('DD/MM/YY');

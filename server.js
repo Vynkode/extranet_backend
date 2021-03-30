@@ -17,15 +17,16 @@ const db = knex({
   // connect to your own database here
   client: 'pg',
   connection: {
-    // connectionString: process.env.DATABASE_URL,
-    // ssl: {
-    //   rejectUnauthorized: false,
-    // },
-    host: '127.0.0.1',
-    user: 'postgres',
-    password: 'gyzvek',
-    database: 'extranet',
-    timezone: 'UTC',
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+    // LOCALHOST
+    // host: '127.0.0.1',
+    // user: 'postgres',
+    // password: 'gyzvek',
+    // database: 'extranet',
+    // timezone: 'UTC',
   },
 });
 
