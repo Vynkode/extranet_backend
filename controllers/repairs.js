@@ -161,6 +161,7 @@ const handleClosedRepairs = (db) => async (req, res) => {
         'r.su_referencia',
         'r.foto_entrada',
         'r.tipo_reparacion',
+        'r.fecha_compra',
         'r.f_entrada',
         'r.marca',
         'r.modelo',
@@ -201,10 +202,13 @@ const handleClosedRepairs = (db) => async (req, res) => {
 
       if (element.tipo_reparacion === '1') {
         element.tipo_reparacion = 'No Garantía';
+        element.fecha_compra = null
       } else if (element.tipo_reparacion === '2') {
         element.tipo_reparacion = 'Garantía';
+        element.fecha_compra = moment(element.fecha_compra).format('DD/MM/YY');
       } else if (element.tipo_reparacion === '3') {
         element.tipo_reparacion = 'Reclamación';
+        element.fecha_compra = null
       }
 
       element.f_entrada = moment(element.f_entrada).format('DD/MM/YY');
