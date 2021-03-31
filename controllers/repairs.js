@@ -284,9 +284,9 @@ const handleClosedRepairs = (db) => async (req, res) => {
       element.f_liquido = parseFloat(element.f_liquido).toFixed(2);
 
       if (element.agencia === 'SEUR' || element.agencia === 'CORREOS' || element.agencia === 'ENVIALIA' || element.agencia === 'SUS MEDIOS' || element.agencia === 'SUS MEDI') {
-        element.agencia = 'ENVÍO';
+        element.envio = 'ENVÍO';
       } else {
-        element.agencia = 'RECOGIDA';
+        element.envio = 'RECOGIDA';
       }
 
       if (element.f_entrega) {
