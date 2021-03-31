@@ -190,6 +190,7 @@ const handleClosedRepairs = (db) => async (req, res) => {
       .where((builder) => {
         builder.where('cd.email', '=', email).where('r.operario', '!=', 'INMA').where('r.proceso', '=', '8');
       })
+      .limit(500)
       .orderBy('r.f_entrada', 'desc');
 
     const count = repairs.length;
