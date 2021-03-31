@@ -202,13 +202,19 @@ const handleClosedRepairs = (db) => async (req, res) => {
 
       if (element.tipo_reparacion === '1') {
         element.tipo_reparacion = 'No Garantía';
-        element.fecha_compra = null
+        // element.fecha_compra = null
       } else if (element.tipo_reparacion === '2') {
         element.tipo_reparacion = 'Garantía';
-        element.fecha_compra = moment(element.fecha_compra).format('DD/MM/YY');
+        // element.fecha_compra = moment(element.fecha_compra).format('DD/MM/YY');
       } else if (element.tipo_reparacion === '3') {
         element.tipo_reparacion = 'Reclamación';
-        element.fecha_compra = null
+        // element.fecha_compra = null
+      }
+
+      if (element.fecha_compra) {
+        element.fecha_compra = moment(element.fecha_compra).format('DD/MM/YY');
+      } else {
+        element.fecha_compra = null;
       }
 
       element.f_entrada = moment(element.f_entrada).format('DD/MM/YY');
