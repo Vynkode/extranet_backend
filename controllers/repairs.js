@@ -23,11 +23,13 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         'r.f_respuesta_ppto',
         'r.rechazado',
         'r.presupuesto',
-        'r.p_base_imponible',
+        // 'r.p_base_imponible',
+        'r.p_liquido',
         'r.f_reparacion',
         'r.modelo_sustutucion',
         'r.reparacion',
-        'r.f_base_imponible',
+        // 'r.f_base_imponible',
+        'r.f_liquido',
         'r.agencia',
         'r.f_entrega',
         'r.proceso',
@@ -111,7 +113,8 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         element.presupuesto = '';
       }
 
-      element.p_base_imponible = parseFloat(element.p_base_imponible).toFixed(2);
+      // element.p_base_imponible = parseFloat(element.p_base_imponible).toFixed(2);
+      element.p_liquido = parseFloat(element.p_liquido).toFixed(2);
 
       if (element.f_reparacion) {
         element.f_reparacion = moment(element.f_reparacion).format('DD/MM/YY');
@@ -126,7 +129,8 @@ const handleWorkshopRepairs = (db) => async (req, res) => {
         element.reparacion = '';
       }
 
-      element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
+      // element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
+      element.f_liquido = parseFloat(element.f_liquido).toFixed(2);
 
       if (element.agencia === 'SEUR' || element.agencia === 'CORREOS' || element.agencia === 'ENVIALIA' || element.agencia === 'SUS MEDIOS' || element.agencia === 'SUS MEDI') {
         element.agencia = 'ENVÍO';
@@ -168,10 +172,12 @@ const handleClosedRepairs = (db) => async (req, res) => {
         'r.f_respuesta_ppto',
         'r.rechazado',
         'r.presupuesto',
-        'r.p_base_imponible',
+        // 'r.p_base_imponible',
+        'r.p_liquido',
         'r.f_reparacion',
         'r.reparacion',
-        'r.f_base_imponible',
+        // 'r.f_base_imponible',
+        'r.f_liquido',
         'r.agencia',
         'r.f_entrega',
         'r.proceso',
@@ -263,7 +269,9 @@ const handleClosedRepairs = (db) => async (req, res) => {
         element.reparacion = '';
       }
 
-      element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
+      // element.f_base_imponible = parseFloat(element.f_base_imponible).toFixed(2);
+      // element.f_liquido = parseFloat(element.f_liquido).toFixed(2);
+      element.p_liquido = parseFloat(element.p_liquido).toFixed(2);
 
       if (element.agencia === 'SEUR' || element.agencia === 'CORREOS' || element.agencia === 'ENVIALIA' || element.agencia === 'SUS MEDIOS' || element.agencia === 'SUS MEDI') {
         element.agencia = 'ENVÍO';
