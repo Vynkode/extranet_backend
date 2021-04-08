@@ -2,10 +2,11 @@ const moment = require('moment');
 
 const handleRepairs = db => async (req, res) => {
   // console.log(req.params);
-  const { email, status } = req.params;
+  const { codigo, dir, status } = req.query;
 
   try {
     const repairs = await db('reparaciones as r')
+      .leftJoin('tipos_de_aparatos as ta', 'r.tipo_aparato', 'ta.tipo_aparato')
       .select(
         'r.numero',
         'r.su_referencia',
@@ -23,32 +24,30 @@ const handleRepairs = db => async (req, res) => {
         'r.f_respuesta_ppto',
         'r.rechazado',
         'r.presupuesto',
-        // 'r.p_base_imponible',
         'r.p_liquido',
         'r.f_reparacion',
         'r.modelo_sustutucion',
         'r.reparacion',
-        // 'r.f_base_imponible',
         'r.f_liquido',
         'r.agencia',
         'r.f_entrega',
         'r.proceso',
-        'r.estado'
-        // 'ta.accesorio1'
+        'r.estado',
+        'r.accesorio1 as acc1',
+        'r.accesorio2 as acc2',
+        'r.accesorio3 as acc3',
+        'r.accesorio4 as acc4',
+        'r.accesorio5 as acc5',
+        'ta.accesorio1',
+        'ta.accesorio2',
+        'ta.accesorio3',
+        'ta.accesorio4',
+        'ta.accesorio5'
       )
-      .join('clientes_direcciones as cd', function () {
-        this.on('cd.codigo', '=', 'r.codigo_envio').andOn(
-          'cd.nombre',
-          '=',
-          'r.nombre'
-        );
-      })
-      // .join('tipos_de_aparatos as ta', function () {
-      //   this.on('ta.tipo_aparato', '=', 'r.tipo_aparato');
-      // })
       .where(builder => {
         builder
-          .where('cd.email', '=', email)
+          .where('r.codigo_contable', '=', codigo)
+          .where('r.codigo_envio', '=', dir)
           .where('r.operario', '!=', 'INMA')
           .where('r.proceso', '=', status);
       })
@@ -57,7 +56,9 @@ const handleRepairs = db => async (req, res) => {
     const count = repairs.length;
     // console.log(count);
     if (!count)
-      return res.status(202).json('No se han encontrado reparaciones');
+      return res
+        .status(202)
+        .json(['No se han encontrado reparaciones', 'Count vacio']);
     repairs.forEach(element => {
       if (element.foto_entrada) {
         element.foto_entrada = Buffer.from(element.foto_entrada).toString(
@@ -151,9 +152,28 @@ const handleRepairs = db => async (req, res) => {
 
       if (element.f_reparacion) {
         element.f_reparacion = moment(element.f_reparacion).format('DD/MM/YY');
+        element.accesorios = [];
+        if (element.acc1 && element.accesorio1)
+          element.accesorios.push(element.accesorio1);
+        if (element.acc2 && element.accesorio2)
+          element.accesorios.push(element.accesorio2);
+        if (element.acc3 && element.accesorio3)
+          element.accesorios.push(element.accesorio3);
+        if (element.acc4 && element.accesorio4)
+          element.accesorios.push(element.accesorio4);
+        if (element.acc5 && element.accesorio5)
+          element.accesorios.push(element.accesorio5);
       } else {
         element.f_reparacion = null;
       }
+      ['acc1', 'acc2', 'acc3', 'acc4', 'acc5'].forEach(k => delete element[k]);
+      [
+        'accesorio1',
+        'accesorio2',
+        'accesorio3',
+        'accesorio4',
+        'accesorio5',
+      ].forEach(k => delete element[k]);
 
       const reparacionString = element.reparacion
         ? element.reparacion.toString()
