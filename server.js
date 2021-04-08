@@ -19,16 +19,16 @@ const db = knex({
   client: 'pg',
   connection: {
     // connectionString: process.env.DATABASE_URL,
-    // connectionString: process.env.HEROKU_POSTGRESQL_SILVER_URL,
-    // ssl: {
-    //   rejectUnauthorized: false,
-    // },
+    connectionString: process.env.HEROKU_POSTGRESQL_SILVER_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
     // LOCALHOST
-    host: '127.0.0.1',
-    user: 'postgres',
-    password: 'gyzvek',
-    database: 'extranet',
-    timezone: 'UTC',
+    // host: '127.0.0.1',
+    // user: 'postgres',
+    // password: 'gyzvek',
+    // database: 'extranet',
+    // timezone: 'UTC',
   },
 });
 
