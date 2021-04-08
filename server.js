@@ -12,22 +12,23 @@ const profile = require('./controllers/profile');
 const converter = require('./controllers/converter');
 const createlogin = require('./controllers/createlogin');
 const test = require('./controllers/test');
+const test1 = require('./controllers/test1');
 
 const db = knex({
   // connect to your own database here
   client: 'pg',
   connection: {
     // connectionString: process.env.DATABASE_URL,
-    connectionString: process.env.HEROKU_POSTGRESQL_SILVER_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
+    // connectionString: process.env.HEROKU_POSTGRESQL_SILVER_URL,
+    // ssl: {
+    //   rejectUnauthorized: false,
+    // },
     // LOCALHOST
-    // host: '127.0.0.1',
-    // user: 'postgres',
-    // password: 'gyzvek',
-    // database: 'extranet',
-    // timezone: 'UTC',
+    host: '127.0.0.1',
+    user: 'postgres',
+    password: 'gyzvek',
+    database: 'extranet',
+    timezone: 'UTC',
   },
 });
 
@@ -66,6 +67,7 @@ app.get('/repairsclosed/:email', repairs.handleClosedRepairs(db));
 app.get('/reparaciones', test.reparaciones(db));
 app.get('/clientes', test.clientes(db));
 app.get('/direcciones/:email', test.direcciones(db));
+app.get('/repairs/:email/:status', test1.handleRepairs(db));
 
 //Create users from db for login
 app.get('/createlogin', createlogin.handleCreateLogin(db, bcrypt));
