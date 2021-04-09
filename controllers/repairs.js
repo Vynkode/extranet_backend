@@ -1,7 +1,7 @@
 const moment = require('moment');
 
 const handleRepairs = db => async (req, res) => {
-  // console.log(req.params);
+  console.log(req.params);
   const { codigo, dir, status } = req.query;
   let find;
   if (status === '8') find = '=';
