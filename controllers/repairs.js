@@ -3,6 +3,10 @@ const moment = require('moment');
 const handleRepairs = db => async (req, res) => {
   // console.log(req.params);
   const { codigo, dir, status } = req.query;
+  let find;
+  if (status === '8') find = '=';
+  if (status !== '8') find = '!=';
+
   try {
     const repairs = await db('reparaciones as r')
       .leftJoin('tipos_de_aparatos as ta', 'r.tipo_aparato', 'ta.tipo_aparato')
@@ -48,7 +52,7 @@ const handleRepairs = db => async (req, res) => {
           .where('r.codigo_contable', '=', codigo)
           .where('r.codigo_envio', '=', dir)
           .where('r.operario', '!=', 'INMA')
-          .where('r.proceso', status === '8' ? '=' : '!=', status);
+          .where('r.proceso', find, status);
       })
       .orderBy('r.f_entrada', 'desc');
 
