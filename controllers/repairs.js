@@ -1,15 +1,18 @@
 const moment = require('moment');
 
 const handleRepairs = db => async (req, res) => {
-  console.log(req.params);
-  const { codigo, dir, status } = req.query;
+  // console.log(req.query);
+  let { codigo, dir, status } = req.query;
+  // status = Number(status);
+  // console.log(status);
   let find;
   if (status === '8') find = '=';
   if (status !== '8') find = '!=';
+  // console.log(`proceso ${find} 8`);
 
   try {
     const repairs = await db('reparaciones as r')
-      .leftJoin('tipos_de_aparatos as ta', 'r.tipo_aparato', 'ta.tipo_aparato')
+      // .leftJoin('tipos_de_aparatos as ta', 'r.tipo_aparato', 'ta.tipo_aparato')
       .select(
         'r.numero',
         'r.su_referencia',
@@ -40,19 +43,19 @@ const handleRepairs = db => async (req, res) => {
         'r.accesorio2 as acc2',
         'r.accesorio3 as acc3',
         'r.accesorio4 as acc4',
-        'r.accesorio5 as acc5',
-        'ta.accesorio1',
-        'ta.accesorio2',
-        'ta.accesorio3',
-        'ta.accesorio4',
-        'ta.accesorio5'
+        'r.accesorio5 as acc5'
+        // 'ta.accesorio1',
+        // 'ta.accesorio2',
+        // 'ta.accesorio3',
+        // 'ta.accesorio4',
+        // 'ta.accesorio5'
       )
       .where(builder => {
         builder
           .where('r.codigo_contable', '=', codigo)
           .where('r.codigo_envio', '=', dir)
           .where('r.operario', '!=', 'INMA')
-          .where('r.proceso', find, status);
+          .where('r.proceso', find, 8);
       })
       .orderBy('r.f_entrada', 'desc');
 
@@ -155,17 +158,17 @@ const handleRepairs = db => async (req, res) => {
 
       if (element.f_reparacion) {
         element.f_reparacion = moment(element.f_reparacion).format('DD/MM/YY');
-        element.accesorios = [];
-        if (element.acc1 && element.accesorio1)
-          element.accesorios.push(element.accesorio1);
-        if (element.acc2 && element.accesorio2)
-          element.accesorios.push(element.accesorio2);
-        if (element.acc3 && element.accesorio3)
-          element.accesorios.push(element.accesorio3);
-        if (element.acc4 && element.accesorio4)
-          element.accesorios.push(element.accesorio4);
-        if (element.acc5 && element.accesorio5)
-          element.accesorios.push(element.accesorio5);
+        // element.accesorios = [];
+        // if (element.acc1 && element.accesorio1)
+        //   element.accesorios.push(element.accesorio1);
+        // if (element.acc2 && element.accesorio2)
+        //   element.accesorios.push(element.accesorio2);
+        // if (element.acc3 && element.accesorio3)
+        //   element.accesorios.push(element.accesorio3);
+        // if (element.acc4 && element.accesorio4)
+        //   element.accesorios.push(element.accesorio4);
+        // if (element.acc5 && element.accesorio5)
+        //   element.accesorios.push(element.accesorio5);
       } else {
         element.f_reparacion = null;
       }
