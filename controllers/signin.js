@@ -30,7 +30,7 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
     // })
     // .catch((err) => res.status(400).json(['wrong credentials', err]));
     // console.log(user);
-    user[0].id = `${user[0].codigo}/${user[0].codigo_contable.slice(3, -1)}`;
+    user[0].id = `${user[0].codigo_contable}${user[0].codigo}`;
     delete user[0].codigo;
     delete user[0].codigo_contable;
     return res.status(200).json(user[0]);
