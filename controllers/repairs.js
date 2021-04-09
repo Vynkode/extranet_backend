@@ -57,6 +57,7 @@ const handleRepairs = db => async (req, res) => {
           .where('r.operario', '!=', 'INMA')
           .where('r.proceso', find, 8);
       })
+      .limit(100)
       .orderBy('r.f_entrada', 'desc');
 
     const count = repairs.length;
