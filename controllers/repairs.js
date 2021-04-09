@@ -61,10 +61,7 @@ const handleRepairs = db => async (req, res) => {
 
     const count = repairs.length;
     // console.log(count);
-    if (!count)
-      return res
-        .status(202)
-        .json(['No se han encontrado reparaciones', 'Count vacio']);
+    if (!count) return res.status(202).json([count, repairs]);
     repairs.forEach(element => {
       if (element.foto_entrada) {
         element.foto_entrada = Buffer.from(element.foto_entrada).toString(
