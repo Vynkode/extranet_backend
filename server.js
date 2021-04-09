@@ -19,16 +19,16 @@ const db = knex({
   client: 'pg',
   connection: {
     // connectionString: process.env.DATABASE_URL,
-    // connectionString: process.env.HEROKU_POSTGRESQL_SILVER_URL,
-    // ssl: {
-    //   rejectUnauthorized: false,
-    // },
+    connectionString: process.env.HEROKU_POSTGRESQL_SILVER_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
     // LOCALHOST
-    host: '127.0.0.1',
-    user: 'postgres',
-    password: 'gyzvek',
-    database: 'extranet',
-    timezone: 'UTC',
+    // host: '127.0.0.1',
+    // user: 'postgres',
+    // password: 'gyzvek',
+    // database: 'extranet',
+    // timezone: 'UTC',
   },
 });
 
@@ -53,8 +53,9 @@ app.get('/profile/:id', (req, res) => {
 });
 
 //Repairs routes
-app.get('/repairsworkshop/:email', repairs.handleWorkshopRepairs(db));
-app.get('/repairsclosed/:email', repairs.handleClosedRepairs(db));
+app.get('/repairs', repairs.handleRepairs(db));
+// app.get('/repairsworkshop/:email', repairs.handleWorkshopRepairs(db));
+// app.get('/repairsclosed/:email', repairs.handleClosedRepairs(db));
 
 // app.put('/image', (req, res) => {
 //   image.handleImage(req, res, db);
@@ -67,7 +68,7 @@ app.get('/repairsclosed/:email', repairs.handleClosedRepairs(db));
 app.get('/reparaciones', test.reparaciones(db));
 app.get('/clientes', test.clientes(db));
 app.get('/direcciones/:email', test.direcciones(db));
-app.get('/repairs', test1.handleRepairs(db));
+app.get('/repairstest', test1.handleRepairs(db));
 
 //Create users from db for login
 app.get('/createlogin', createlogin.handleCreateLogin(db, bcrypt));
