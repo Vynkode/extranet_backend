@@ -100,7 +100,7 @@ const handleUpdateLogin = db => async (req, res) => {
     // .merge()
     // .returning('*');
 
-    return res.status(200).json(`Usuario actualizado: ${user}`);
+    return res.status(200).json(user);
   } catch (err) {
     const { contable, codigo, email } = req.body;
     return res
