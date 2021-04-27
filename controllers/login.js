@@ -92,10 +92,13 @@ const handleUpdateLogin = db => async (req, res) => {
   try {
     const { contable, codigo, email } = req.params;
     const [user] = await db('login_extranet')
-      .insert({ codigo_contable: contable, codigo: codigo, email: email })
-      .onConflict('client_unique')
-      .merge()
+      .where({ codigo_contable: contable, codigo: codigo })
+      .update({ email: email })
       .returning('*');
+    // .insert({ codigo_contable: contable, codigo: codigo, email: email })
+    // .onConflict('client_unique')
+    // .merge()
+    // .returning('*');
 
     return res.status(200).json(`Usuario actualizado: ${user}`);
   } catch (err) {
