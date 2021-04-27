@@ -102,9 +102,15 @@ const handleUpdateLogin = db => async (req, res) => {
 
     return res.status(200).json(`Usuario actualizado: ${user[0]}`);
   } catch (err) {
+    const { contable, codigo, email } = req.body;
     return res
       .status(401)
-      .json(['Ha habido un error al actualizar el usuario', err, req.body]);
+      .json([
+        'Ha habido un error al actualizar el usuario',
+        contable,
+        codigo,
+        email,
+      ]);
   }
 };
 
