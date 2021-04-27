@@ -90,7 +90,7 @@ const handleCreateLogin = (db, bcrypt, saltRounds) => async (req, res) => {
 
 const handleUpdateLogin = db => async (req, res) => {
   try {
-    const { contable, codigo, email } = req.params;
+    const { contable, codigo, email } = req.body;
     const [user] = await db('login_extranet')
       .where({ codigo_contable: contable, codigo: codigo })
       .update({ email: email })
@@ -104,7 +104,7 @@ const handleUpdateLogin = db => async (req, res) => {
   } catch (err) {
     return res
       .status(401)
-      .json(['Ha habido un error al actualizar el usuario', err, req.params]);
+      .json(['Ha habido un error al actualizar el usuario', err, req.body]);
   }
 };
 
