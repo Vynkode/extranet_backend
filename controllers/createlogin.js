@@ -1,18 +1,19 @@
 const handleCreateLogin = (db, bcrypt, saltRounds) => async (req, res) => {
   try {
-    // const login = await db('clientes_direcciones as cd')
-    //   .select('cd.email', 'cd.telefono1')
-    //   .join('clientes as c', 'c.nombre', '=', 'cd.nombre')
-    //   .orderBy('cd.email');
-    // console.log(login.length);
-    // const goodUsers = login.filter(user => {
-    //   if (!user.email || !user.telefono1) {
-    //     return false;
-    //   } else {
-    //     return true;
-    //   }
-    // });
-    // console.log(goodUsers.length);
+    const login = await db('clientes_direcciones as cd')
+      .select('cd.email', 'c.codigo_contable')
+      .join('clientes as c', 'c.nombre', '=', 'cd.nombre')
+      .orderBy('cd.email');
+    console.log(login.length);
+    const goodUsers = login.filter(user => {
+      if (!user.email || !user.telefono1) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+    console.log(goodUsers.length);
+    return res.status(200).json(goodUsers);
     // const loginData = goodUsers.map((user, index) => {
     //   const email = user.email.trim();
     //   const hash = bcrypt.hashSync(user.telefono1, saltRounds);
@@ -26,15 +27,14 @@ const handleCreateLogin = (db, bcrypt, saltRounds) => async (req, res) => {
     //     hash,
     //   };
     // });
-    const hash = bcrypt.hashSync('hola', saltRounds);
-    await db('login_extranet').insert({
-      codigo_contable: '012345678901',
-      codigo: '00',
-      email: 'kevin@gmail.com',
-      hash: hash,
-      first_time: true,
-    });
-    return res.status(200).json('Creado correctamente');
+    // const hash = bcrypt.hashSync('hola', saltRounds);
+    // await db('login_extranet').insert({
+    //   codigo_contable: '012345678901',
+    //   codigo: '00',
+    //   email: 'kevin@gmail.com',
+    //   hash: hash,
+    //   first_time: true,
+    // });
     // users.map(user => {
     //   const hash = bcrypt.hashSync(user.telefono1);
     //   db('login').insert({ email: user.email, hash: hash });
