@@ -6,7 +6,7 @@ const handleCreateLogin = (db, bcrypt, saltRounds) => async (req, res) => {
       .orderBy('cd.email');
     console.log(login.length);
     const goodUsers = login.filter(user => {
-      if (!user.email || !user.telefono1) {
+      if (!user.email) {
         return false;
       } else {
         return true;
