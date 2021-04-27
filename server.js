@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const cors = require('cors');
 const knex = require('knex');
 
@@ -71,7 +72,7 @@ app.get('/direcciones/:email', test.direcciones(db));
 app.get('/repairstest', test1.handleRepairs(db));
 
 //Create users from db for login
-app.get('/createlogin', createlogin.handleCreateLogin(db, bcrypt));
+app.get('/createlogin', createlogin.handleCreateLogin(db, bcrypt, saltRounds));
 
 app.get('/converter', converter.converterImage(db));
 

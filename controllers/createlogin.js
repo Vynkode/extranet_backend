@@ -1,30 +1,61 @@
-const handleCreateLogin = (db, bcrypt) => async (req, res) => {
+const handleCreateLogin = (db, bcrypt, saltRounds) => async (req, res) => {
   try {
-    const login = await db('clientes_direcciones as cd').select('cd.email', 'cd.telefono1').join('clientes as c', 'c.nombre', '=', 'cd.nombre').orderBy('cd.email');
-    const users = login
-      .filter((user) => {
-        if (!user.email || !user.telefono1) {
-          return false;
-        } else {
-          return true;
-        }
-      })
-      .map((user) => ({
-        email: user.email.trim(),
-        hash: bcrypt.hashSync(user.telefono1),
-      }));
-    // await db('login').insert({ email: 'kevin@gmail.com', hash: 'asdaisdjaiosda' });
-    // users.map((user) => {
+    // const login = await db('clientes_direcciones as cd')
+    //   .select('cd.email', 'cd.telefono1')
+    //   .join('clientes as c', 'c.nombre', '=', 'cd.nombre')
+    //   .orderBy('cd.email');
+    // console.log(login.length);
+    // const goodUsers = login.filter(user => {
+    //   if (!user.email || !user.telefono1) {
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
+    // });
+    // console.log(goodUsers.length);
+    // const loginData = goodUsers.map((user, index) => {
+    //   const email = user.email.trim();
+    //   const hash = bcrypt.hashSync(user.telefono1, saltRounds);
+    //   console.log(
+    //     `Usuario ${index + 1} creado => email: ${email}, hash: ${hash} (${
+    //       hash.length
+    //     })`
+    //   );
+    //   return {
+    //     email,
+    //     hash,
+    //   };
+    // });
+    const hash = bcrypt.hashSync('hola', saltRounds);
+    await db('login_extranet').insert({
+      codigo_contable: '012345678901',
+      codigo: '00',
+      email: 'kevin@gmail.com',
+      hash: hash,
+      first_time: true,
+    });
+    return res.status(200).json('Creado correctamente');
+    // users.map(user => {
     //   const hash = bcrypt.hashSync(user.telefono1);
     //   db('login').insert({ email: user.email, hash: hash });
     //   console.log(['hecho', user.email, hash]);
     // });
-    await db('login').insert(users).onConflict('email').ignore();
+    // await db('login').insert(users).onConflict('email').ignore();
 
-    console.log(users);
-    return res.status(200).json(users);
+    // console.log(users);
+    // return res.status(200).json([loginData.length, loginData]);
+    // users.forEach(user => console.log(user[hash].length()));
+    // const hash = bcrypt.hashSync('nazaret', saltRounds);
+    // const login = bcrypt.compareSync('nazaret', hash);
+    // const login2 = bcrypt.compareSync('malmalmal', hash);
+
+    // return res.status(200).json([
+    //   { hash, length: hash.length, login },
+    //   { hash, length: hash.length, login2 },
+    // ]);
   } catch (err) {
-    return res.status(400).json(err);
+    console.log(err);
+    return res.status(400).json('err');
   }
 
   // db.transaction((trx)=> {
