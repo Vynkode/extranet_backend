@@ -1,7 +1,7 @@
 const handleCreateLogin = (db, bcrypt, saltRounds) => async (req, res) => {
   try {
     const login = await db('clientes_direcciones as cd')
-      .select('cd.email', 'c.codigo_contable')
+      .select('c.codigo_contable', 'cd.codigo', 'cd.email')
       .join('clientes as c', 'c.nombre', '=', 'cd.nombre')
       .orderBy('cd.email');
     console.log(login.length);
