@@ -11,7 +11,7 @@ const repairs = require('./controllers/repairs');
 const profile = require('./controllers/profile');
 // const image = require('./controllers/image');
 const converter = require('./controllers/converter');
-const createlogin = require('./controllers/createlogin');
+const login = require('./controllers/login');
 const test = require('./controllers/test');
 const test1 = require('./controllers/test1');
 
@@ -71,8 +71,9 @@ app.get('/clientes', test.clientes(db));
 app.get('/direcciones/:email', test.direcciones(db));
 app.get('/repairstest', test1.handleRepairs(db));
 
-//Create users from db for login
-app.get('/createlogin', createlogin.handleCreateLogin(db, bcrypt, saltRounds));
+//Create and update users for login table
+app.get('/createlogin', login.handleCreateLogin(db, bcrypt, saltRounds));
+app.post('/updatelogin', login.handleUpdateLogin(db));
 
 app.get('/converter', converter.converterImage(db));
 
