@@ -11,10 +11,9 @@ const handleCreateLogin = (db, bcrypt, saltRounds) => async (req, res) => {
     });
     return res
       .status(200)
-      .json([
-        'El login para el ususario se ha creado correctamente',
-        { codigo_contable: contable, codigo, email },
-      ]);
+      .json(
+        `El login para el ususario ${contable}/${codigo} se ha creado correctamente con el email: ${email}`
+      );
     // const login = await db('clientes_direcciones as cd')
     //   .select('c.codigo_contable', 'cd.codigo', 'cd.email')
     //   .join('clientes as c', 'c.nombre', '=', 'cd.nombre')
@@ -59,7 +58,9 @@ const handleCreateLogin = (db, bcrypt, saltRounds) => async (req, res) => {
     console.log(err);
     return res
       .status(400)
-      .json(['No se ha podido crear el login para este usuario']);
+      .json(
+        `No se ha podido crear el login para el usuario ${contable}/${codigo} con email: ${email}`
+      );
   }
 };
 
@@ -69,15 +70,18 @@ const handleUpdateLogin = db => async (req, res) => {
     const user = await db('login_extranet')
       .where({ codigo_contable: contable, codigo: codigo })
       .update({ email: email })
-      .returning('*');
+      .returning(['codigo_contable', 'codigo', 'email']);
+    if (!user.length) throw new Error();
     return res
       .status(200)
-      .json(['El login del usuario se ha actualizado correctamente', user]);
+      .json(
+        `El email del usuario ${user.codigo_contable}/${user.codigo} se ha actualizado correctamente a ${user.email}`
+      );
   } catch (err) {
     return res
       .status(401)
       .json(
-        'No se ha podido actualizar el login del usuario, vuelva a intentarlo mas tarde'
+        `No se ha podido actualizar el login del usuario ${contable}/${codigo}`
       );
   }
 };
@@ -91,26 +95,26 @@ const handleUpdatePasswordLogin = (db, bcrypt, saltRounds) => async (
     const user = await db('login_extranet')
       .select('codigo_contable', 'codigo', 'hash')
       .where({ codigo_contable: contable, codigo: codigo });
-    console.log(user);
     const validActualPassword = bcrypt.compareSync(
       actualPassword,
       user[0].hash
     );
-    console.log(validActualPassword);
     if (!validActualPassword) throw new Error('Error al validar');
     const hash = bcrypt.hashSync(newPassword, saltRounds);
-    console.log(hash);
     await db('login_extranet')
       .where({ codigo_contable: contable, codigo: codigo })
       .update({ hash: hash, first_time: false });
-    return res.status(202).json('El password se ha actualizado correctamente');
+    return res
+      .status(202)
+      .json(
+        `El usuario ${contable}/${codigo}  ha actualizado el password correctamente`
+      );
   } catch (e) {
     return res
       .status(401)
-      .json([
-        'Ha ocurrido un error al actualizar el password, vuelva a intentarlo mas tarde',
-        e,
-      ]);
+      .json(
+        `Ha ocurrido un error al actualizar el password del usuario ${contable}/${codigo}`
+      );
   }
 };
 
