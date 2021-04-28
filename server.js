@@ -74,6 +74,10 @@ app.get('/repairstest', test1.handleRepairs(db));
 //Create and update users for login table
 app.get('/createlogin', login.handleCreateLogin(db, bcrypt, saltRounds));
 app.post('/updatelogin', login.handleUpdateLogin(db));
+app.post(
+  '/updatepasswordlogin',
+  login.handleUpdatePasswordLogin(db, bcrypt, saltRounds)
+);
 
 app.get('/converter', converter.converterImage(db));
 
