@@ -102,7 +102,7 @@ const handleUpdatePasswordLogin = (db, bcrypt, saltRounds) => async (
     console.log(hash);
     await db('login_extranet')
       .where({ codigo_contable: contable, codigo: codigo })
-      .update({ hash: hash, firstTime: false });
+      .update({ hash: hash, first_time: false });
     return res.status(202).json('El password se ha actualizado correctamente');
   } catch (e) {
     return res
