@@ -1,6 +1,6 @@
 const handleCreateLogin = (db, bcrypt, saltRounds) => async (req, res) => {
+  const { contable, codigo, email } = req.body;
   try {
-    const { contable, codigo, email } = req.body;
     const hash = bcrypt.hashSync(contable, saltRounds);
     await db('login_extranet').insert({
       codigo_contable: contable,
@@ -65,8 +65,8 @@ const handleCreateLogin = (db, bcrypt, saltRounds) => async (req, res) => {
 };
 
 const handleUpdateLogin = db => async (req, res) => {
+  const { contable, codigo, email } = req.body;
   try {
-    const { contable, codigo, email } = req.body;
     const user = await db('login_extranet')
       .where({ codigo_contable: contable, codigo: codigo })
       .update({ email: email })
@@ -90,8 +90,8 @@ const handleUpdatePasswordLogin = (db, bcrypt, saltRounds) => async (
   req,
   res
 ) => {
+  const { contable, codigo, actualPassword, newPassword } = req.body;
   try {
-    const { contable, codigo, actualPassword, newPassword } = req.body;
     const user = await db('login_extranet')
       .select('codigo_contable', 'codigo', 'hash')
       .where({ codigo_contable: contable, codigo: codigo });
