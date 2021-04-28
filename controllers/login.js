@@ -96,7 +96,7 @@ const handleUpdatePasswordLogin = (db, bcrypt, saltRounds) => async (
       actualPassword,
       user[0].hash
     );
-    if (!validActualPassword) throw new Error();
+    if (!validActualPassword) throw new Error('Error al validar');
     const hash = bcrypt.hashSync(newPassword, saltRounds);
     await db('login_extranet')
       .where({ codigo_contable: contable, codigo: codigo })
