@@ -75,13 +75,13 @@ const handleUpdateLogin = db => async (req, res) => {
     return res
       .status(200)
       .json(
-        `El email del usuario ${user.codigo_contable}/${user.codigo} se ha actualizado correctamente a ${user.email}`
+        `El email del usuario ${user[0]}/${user[1]} se ha actualizado correctamente a ${user[2]}`
       );
   } catch (err) {
     return res
       .status(401)
       .json(
-        `No se ha podido actualizar el login del usuario ${contable}/${codigo}`
+        `No se ha podido actualizar el email: ${email} del usuario ${contable}/${codigo}`
       );
   }
 };
