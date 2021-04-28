@@ -96,19 +96,22 @@ const handleUpdatePasswordLogin = (db, bcrypt, saltRounds) => async (
     const user = await db('login_extranet')
       .select('codigo_contable', 'codigo', 'hash')
       .where({ codigo_contable: contable, codigo: codigo });
+    if (!user.length) throw new Error('Error al buscar usuario');
     const validActualPassword = bcrypt.compareSync(
       actualPassword,
       user[0].hash
     );
     if (!validActualPassword) throw new Error('Error al validar');
     const hash = bcrypt.hashSync(newPassword, saltRounds);
-    await db('login_extranet')
+    const updateUser = await db('login_extranet')
       .where({ codigo_contable: contable, codigo: codigo })
-      .update({ hash: hash, first_time: false });
+      .update({ hash: hash, first_time: false })
+      .returning(['codigo_contable', 'codigo']);
+    if (!updateUser.length) throw new Error('Error al actualizar password');
     return res
       .status(202)
       .json(
-        `El usuario ${contable}/${codigo}  ha actualizado el password correctamente`
+        `El usuario ${updateUser[0].codigo_contable}/${updateUser[0].codigo}  ha actualizado el password correctamente`
       );
   } catch (e) {
     return res
