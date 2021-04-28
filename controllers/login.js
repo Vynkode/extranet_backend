@@ -72,6 +72,7 @@ const handleUpdateLogin = db => async (req, res) => {
       .update({ email: email })
       .returning(['codigo_contable', 'codigo', 'email']);
     if (!user.length) throw new Error();
+    console.log(user);
     return res
       .status(200)
       .json(
