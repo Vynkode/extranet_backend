@@ -67,7 +67,7 @@ const handleCreateLogin = (db, bcrypt, saltRounds) => async (req, res) => {
 const handleUpdateLogin = db => async (req, res) => {
   const { contable, codigo, email } = req.body;
   try {
-    const user = await db('login_extranet')
+    const [user] = await db('login_extranet')
       .where({ codigo_contable: contable, codigo: codigo })
       .update({ email: email })
       .returning(['codigo_contable', 'codigo', 'email']);
@@ -76,7 +76,7 @@ const handleUpdateLogin = db => async (req, res) => {
     return res
       .status(200)
       .json(
-        `El email del usuario ${user[0]}/${user[1]} se ha actualizado correctamente a ${user[2]}`
+        `El email del usuario ${user.codigo_contable}/${user.codigo} se ha actualizado correctamente a ${user.email}`
       );
   } catch (err) {
     return res
