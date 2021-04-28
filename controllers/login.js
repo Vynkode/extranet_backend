@@ -91,6 +91,7 @@ const handleUpdatePasswordLogin = (db, bcrypt, saltRounds) => async (
     const user = await db('login_extranet')
       .select('codigo_contable', 'codigo', 'hash')
       .where({ codigo_contable: contable, codigo: codigo });
+    console.log(user);
     const validActualPassword = bcrypt.compareSync(
       actualPassword,
       user[0].hash
@@ -104,9 +105,10 @@ const handleUpdatePasswordLogin = (db, bcrypt, saltRounds) => async (
   } catch (e) {
     return res
       .status(401)
-      .json(
-        'Ha ocurrido un error al actualizar el password, vuelva a intentarlo mas tarde'
-      );
+      .json([
+        'Ha ocurrido un error al actualizar el password, vuelva a intentarlo mas tarde',
+        e,
+      ]);
   }
 };
 
