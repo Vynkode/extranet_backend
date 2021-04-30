@@ -61,8 +61,9 @@ app.get('/repairs', repairs.handleRepairs(db));
 // Test connection
 app.get('/reparaciones', test.reparaciones(db));
 app.get('/clientes', test.clientes(db));
-app.get('/direcciones/:email', test.direcciones(db));
+app.get('/direcciones', test.direcciones(db));
 app.get('/repairstest', test1.handleRepairs(db));
+app.get('/pruebasignin', test.pruebaSignin(db, bcrypt));
 
 //Create and update users for login table
 app.get('/createlogin', login.handleCreateLogin(db, bcrypt, saltRounds));
