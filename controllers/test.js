@@ -71,6 +71,7 @@ const pruebaSignin = (db, bcrypt) => (req, res) => {
     .from('login_extranet')
     .where('email', '=', email)
     .then(data => {
+      console.log(data[0]);
       const isValid = bcrypt.compareSync(password, data[0].hash);
       if (isValid) {
         db.select('*')
