@@ -68,39 +68,44 @@ const pruebaSignin = (db, bcrypt) => async (req, res) => {
   const { email, password } = req.body;
   try {
     const [login] = await db
-      .select('email', 'codigo', 'hash')
+      .select('codigo_contable', 'email', 'codigo', 'hash')
       .from('login_extranet')
       .where('email', '=', email);
     console.log(login);
-
-    const isValid = bcrypt.compareSync(password, data[0].hash);
+    const isValid = bcrypt.compareSync(password, login.hash);
+    let user;
     if (isValid) {
-      db.select(
-        'cd.codigo',
-        'c.codigo_contable',
-        'cd.nombre',
-        'c.razon_social',
-        'c.nif',
-        'cd.email',
-        'cd.telefono1',
-        'cd.calle',
-        'cd.distrito',
-        'cd.ciudad',
-        'cd.provincia',
-        'cd.contacto',
-        'cd.fax',
-        'c.distribuidor'
-      )
-        .from('clientes_direcciones as cd')
-        .where('cd.email', '=', email)
-        .join('clientes as c', 'cd.nombre', '=', 'c.nombre')
-        // db.select('*')
-        //   .from('clientes_direcciones as cd')
-        //   .where('email', '=', email)
-        .then(user => {
-          return res.status(202).json(user[0]);
-        })
-        .catch(err => res.status(400).json('unable to get user'));
+      try {
+        const [data] = await db
+          .select(
+            'cd.codigo',
+            'c.codigo_contable',
+            'cd.nombre',
+            'c.razon_social',
+            'c.nif',
+            'cd.email',
+            'cd.telefono1',
+            'cd.calle',
+            'cd.distrito',
+            'cd.ciudad',
+            'cd.provincia',
+            'cd.contacto',
+            'cd.fax',
+            'c.distribuidor'
+          )
+          .from('clientes_direcciones as cd')
+          .where('cd.email', '=', email)
+          .andWhere('cd.codigo', '=', login.codigo)
+          .andWhere('c.codigo_contable', '=', login.codigo_contable)
+          .join('clientes as c', 'cd.nombre', '=', 'c.nombre');
+        data.id = `${data.codigo_contable}${data.codigo}`;
+        delete data.codigo;
+        delete data.codigo_contable;
+        user = data;
+      } catch (e) {
+        res.status(400).json('unable to get user');
+      }
+      res.status(204).json(user);
     } else {
       res.status(400).json('wrong credentials');
     }
