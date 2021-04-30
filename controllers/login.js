@@ -117,20 +117,6 @@ const handleCreateAllLogin = (db, bcrypt, saltRounds) => async (req, res) => {
         console.log(err.message);
       }
     });
-
-    // const loginData = goodUsers.map((user, index) => {
-    //   const email = user.email.trim();
-    //   const hash = bcrypt.hashSync(user.codigo_contable, saltRounds);
-    //   console.log(
-    //     `Usuario ${index + 1} creado => email: ${email}, hash: ${hash} (${
-    //       hash.length
-    //     })`
-    //   );
-    //   return {
-    //     email,
-    //     hash,
-    //   };
-    // });
     return res.status(200).json([loginData.length, loginData]);
   } catch (err) {
     console.log(err);
