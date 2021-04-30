@@ -75,7 +75,7 @@ const pruebaSignin = (db, bcrypt) => async (req, res) => {
     const isValid = bcrypt.compareSync(password, login.hash);
     if (isValid) {
       try {
-        const [data] = await db
+        const data = await db
           .select(
             'cd.codigo',
             'c.codigo_contable',
@@ -97,6 +97,7 @@ const pruebaSignin = (db, bcrypt) => async (req, res) => {
           .andWhere('cd.codigo', '=', login.codigo)
           .andWhere('c.codigo_contable', '=', login.codigo_contable)
           .join('clientes as c', 'cd.nombre', '=', 'c.nombre');
+        console.log(data);
         data.id = `${data.codigo_contable}${data.codigo}`;
         delete data.codigo;
         delete data.codigo_contable;
