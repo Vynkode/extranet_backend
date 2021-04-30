@@ -72,7 +72,9 @@ const pruebaSignin = (db, bcrypt) => async (req, res) => {
       .from('login_extranet')
       .where('email', '=', email);
     console.log(login);
+    if (!login.email) throw new Error();
     const isValid = bcrypt.compareSync(password, login.hash);
+    let user;
     if (isValid) {
       try {
         const [data] = await db
@@ -101,13 +103,14 @@ const pruebaSignin = (db, bcrypt) => async (req, res) => {
         delete data.codigo;
         delete data.codigo_contable;
         console.log(data);
-        return res.status(204).json(data);
+        user = data;
       } catch (e) {
         return res.status(400).json('unable to get user');
       }
     } else {
       return res.status(400).json('wrong credentials');
     }
+    return res.status(205).json(user);
   } catch (e) {
     return res.status(400).json('wrong credentials');
   }
