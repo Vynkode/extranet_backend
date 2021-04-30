@@ -34,7 +34,7 @@ const handleUpdateLogin = db => async (req, res) => {
     if (!user.length) throw new Error();
     console.log(user);
     return res
-      .status(200)
+      .status(201)
       .json(
         `El email del usuario ${user[0].codigo_contable}/${user[0].codigo} se ha actualizado correctamente a ${user[0].email}`
       );

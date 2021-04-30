@@ -38,8 +38,8 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
     return res.status(400).json(['wrong credentials', err]);
   }
 
-  //   db.select('email', 'hash')
-  //     .from('login')
+  //   db.select('email','codigo', 'hash')
+  //     .from('login_extranet')
   //     .where('email', '=', email)
   //     .then((data) => {
   //       const isValid = bcrypt.compareSync(password, data[0].hash);
