@@ -67,7 +67,7 @@ const direcciones = db => (req, res) => {
 const pruebaSignin = (db, bcrypt) => async (req, res) => {
   const { email, password } = req.body;
   try {
-    const login = await db
+    const [login] = await db
       .select('email', 'codigo', 'hash')
       .from('login_extranet')
       .where('email', '=', email);
