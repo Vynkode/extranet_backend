@@ -78,7 +78,7 @@ const pruebaSignin = (db, bcrypt) => (req, res) => {
           .from('clientes_direcciones as cd')
           .where('email', '=', email)
           .then(user => {
-            return resstatus(202).json(user[0]);
+            return res.status(202).json(user[0]);
           })
           .catch(err => res.status(400).json('unable to get user'));
       } else {
