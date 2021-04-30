@@ -64,28 +64,49 @@ const direcciones = db => (req, res) => {
     .catch(err => res.status(400).json(err));
 };
 
-const pruebaSignin = (db, bcrypt) => (req, res) => {
+const pruebaSignin = (db, bcrypt) => async (req, res) => {
   const { email, password } = req.body;
+  try {
+    const login = await db
+      .select('email', 'codigo', 'hash')
+      .from('login_extranet')
+      .where('email', '=', email);
+    console.log(login);
 
-  db.select('email', 'codigo', 'hash')
-    .from('login_extranet')
-    .where('email', '=', email)
-    .then(data => {
-      console.log(data[0]);
-      const isValid = bcrypt.compareSync(password, data[0].hash);
-      if (isValid) {
-        db.select('*')
-          .from('clientes_direcciones as cd')
-          .where('email', '=', email)
-          .then(user => {
-            return res.status(202).json(user[0]);
-          })
-          .catch(err => res.status(400).json('unable to get user'));
-      } else {
-        res.status(400).json('wrong credentials');
-      }
-    })
-    .catch(err => res.status(400).json('wrong credentials'));
+    const isValid = bcrypt.compareSync(password, data[0].hash);
+    if (isValid) {
+      db.select(
+        'cd.codigo',
+        'c.codigo_contable',
+        'cd.nombre',
+        'c.razon_social',
+        'c.nif',
+        'cd.email',
+        'cd.telefono1',
+        'cd.calle',
+        'cd.distrito',
+        'cd.ciudad',
+        'cd.provincia',
+        'cd.contacto',
+        'cd.fax',
+        'c.distribuidor'
+      )
+        .from('clientes_direcciones as cd')
+        .where('cd.email', '=', email)
+        .join('clientes as c', 'cd.nombre', '=', 'c.nombre')
+        // db.select('*')
+        //   .from('clientes_direcciones as cd')
+        //   .where('email', '=', email)
+        .then(user => {
+          return res.status(202).json(user[0]);
+        })
+        .catch(err => res.status(400).json('unable to get user'));
+    } else {
+      res.status(400).json('wrong credentials');
+    }
+  } catch (e) {
+    res.status(400).json('wrong credentials');
+  }
 };
 
 module.exports = {
