@@ -106,8 +106,8 @@ const handleCreateAllLogin = (db, bcrypt, saltRounds) => async (req, res) => {
         const hash = bcrypt.hashSync(user.codigo_contable, saltRounds);
         db('login_extranet')
           .insert({
-            codigo_contable: contable,
-            codigo: codigo,
+            codigo_contable: user.codigo_contable,
+            codigo: user.codigo,
             email: email,
             hash: hash,
             first_time: true,
