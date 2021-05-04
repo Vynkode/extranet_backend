@@ -112,14 +112,14 @@ const handleCreateAllLogin = (db, bcrypt, saltRounds) => async (req, res) => {
             hash: hash,
             first_time: true,
           })
-          .returning(['codigo_contable', 'codigo'])
           .then(data =>
             console.log(
-              `Usuario ${index + 1}: ${data[0].codigo_contable}/${
-                data[0].codigo
-              } creado => email: ${email}, hash: ${hash} (${hash.length})`
+              `Usuario ${index + 1} creado => email: ${email}, hash: ${hash} (${
+                hash.length
+              })`
             )
-          );
+          )
+          .catch(e => console.log(e));
       } catch (err) {
         console.log(err.message);
       }
