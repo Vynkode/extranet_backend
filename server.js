@@ -8,6 +8,7 @@ const knex = require('knex');
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const repairs = require('./controllers/repairs');
+const repairBudget = require('./controllers/repairBudget');
 const profile = require('./controllers/profile');
 // const image = require('./controllers/image');
 const converter = require('./controllers/converter');
@@ -57,6 +58,10 @@ app.get('/profile/:id', (req, res) => {
 app.get('/repairs', repairs.handleRepairs(db));
 // app.get('/repairsworkshop/:email', repairs.handleWorkshopRepairs(db));
 // app.get('/repairsclosed/:email', repairs.handleClosedRepairs(db));
+
+// Budget repair routes
+app.post('/budgetaccept', repairBudget.handleAcceptBudget(db, bcrypt));
+app.post('/budgetreject', repairBudget.handleRejectBudget(db, bcrypt));
 
 // Test connection
 app.get('/reparaciones', test.reparaciones(db));
