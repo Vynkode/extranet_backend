@@ -104,15 +104,22 @@ const handleCreateAllLogin = (db, bcrypt, saltRounds) => async (req, res) => {
       try {
         const email = user.email.trim();
         const hash = bcrypt.hashSync(user.codigo_contable, saltRounds);
-        if (index % 2 === 0)
-          throw new Error(
-            `El usuario ${index + 1} con email: ${email} no se ha creado`
+        db('login_extranet')
+          .insert({
+            codigo_contable: contable,
+            codigo: codigo,
+            email: email,
+            hash: hash,
+            first_time: true,
+          })
+          .returning(['codigo_contable', 'codigo'])
+          .then(data =>
+            console.log(
+              `Usuario ${index + 1}: ${data[0].codigo_contable}/${
+                data[0].codigo
+              } creado => email: ${email}, hash: ${hash} (${hash.length})`
+            )
           );
-        console.log(
-          `Usuario ${index + 1} creado => email: ${email}, hash: ${hash} (${
-            hash.length
-          })`
-        );
       } catch (err) {
         console.log(err.message);
       }
