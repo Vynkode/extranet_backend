@@ -63,21 +63,21 @@ app.get('/repairs', repairs.handleRepairs(db));
 app.post('/budgetaccept', repairBudget.handleAcceptBudget(db, bcrypt));
 app.post('/budgetreject', repairBudget.handleRejectBudget(db, bcrypt));
 
+//Create and update users for login table
+app.get('/createlogin', login.handleCreateLogin(db, bcrypt, saltRounds));
+// app.get('/createAllLogin', login.handleCreateAllLogin(db, bcrypt, saltRounds));
+app.post('/updatelogin', login.handleUpdateLogin(db));
+app.post(
+  '/updatepasswordlogin',
+  login.handleUpdatePasswordLogin(db, bcrypt, saltRounds)
+);
+
 // Test connection
 app.get('/reparaciones', test.reparaciones(db));
 app.get('/clientes', test.clientes(db));
 app.get('/direcciones', test.direcciones(db));
 app.get('/repairstest', test1.handleRepairs(db));
 app.get('/pruebasignin', test.pruebaSignin(db, bcrypt));
-
-//Create and update users for login table
-app.get('/createlogin', login.handleCreateLogin(db, bcrypt, saltRounds));
-app.get('/createAllLogin', login.handleCreateAllLogin(db, bcrypt, saltRounds));
-app.post('/updatelogin', login.handleUpdateLogin(db));
-app.post(
-  '/updatepasswordlogin',
-  login.handleUpdatePasswordLogin(db, bcrypt, saltRounds)
-);
 
 app.get('/converter', converter.converterImage(db));
 
