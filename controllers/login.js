@@ -115,35 +115,37 @@ const handleCreateAllLogin = (db, bcrypt, saltRounds) => async (req, res) => {
     console.log(allUsers.length);
     // console.log(allUsers);
 
-    // const data = allUsers.map((user, i) => {
-    //   if (!user.email) return;
-    //   const hash = bcrypt.hashSync(user.codigo_contable, saltRounds);
-    //   const newUser = {
-    //     codigo_contable: user.codigo_contable,
-    //     codigo: user.codigo,
-    //     email: user.email.trim(),
-    //     hash: hash,
-    //     first_time: true,
-    //   };
-    //   console.log(`User ${newUser.email} `);
-    //   return db('login_extranet').insert(newUser);
-    // });
+    const users = allUsers.map((user, i) => {
+      if (!user.email || !user.codigo_contable) return;
+      const hash = bcrypt.hashSync(user.codigo_contable, saltRounds);
+      const newUser = {
+        codigo_contable: user.codigo_contable,
+        codigo: user.codigo,
+        email: user.email.trim(),
+        hash: hash,
+        first_time: true,
+      };
+      console.log(
+        `${newUser.codigo_contable}${newUser.codigo}: ${newUser.email} => ${newUser.hash} `
+      );
+      return newUser;
+    });
 
-    const reduced = allUsers.reduce(function (filtered, user) {
-      if (user.email && user.codigo_contable) {
-        const hash = bcrypt.hashSync(user.codigo_contable, saltRounds);
-        const newUser = {
-          codigo_contable: user.codigo_contable,
-          codigo: user.codigo,
-          email: user.email.trim(),
-          hash: hash,
-          first_time: true,
-        };
-        console.log(`User ${newUser.email} `);
-        filtered.push(newUser);
-      }
-      return filtered;
-    }, []);
+    // const reduced = allUsers.reduce(function (filtered, user) {
+    //   if (user.email && user.codigo_contable) {
+    //     const hash = bcrypt.hashSync(user.codigo_contable, saltRounds);
+    //     const newUser = {
+    //       codigo_contable: user.codigo_contable,
+    //       codigo: user.codigo,
+    //       email: user.email.trim(),
+    //       hash: hash,
+    //       first_time: true,
+    //     };
+    //     console.log(`User ${newUser.email} `);
+    //     filtered.push(newUser);
+    //   }
+    //   return filtered;
+    // }, []);
 
     // const goodUsers = allUsers.filter(user => {
     //   if (!user.email) {
@@ -159,14 +161,14 @@ const handleCreateAllLogin = (db, bcrypt, saltRounds) => async (req, res) => {
     //     };
     //   }
     // });
-    console.log(reduced.length);
+    console.log(users.length);
+    console.log(users);
     // console.log(reduced);
-    const data = await db('login_extranet').insert(reduced).returning('*');
+    const data = await db('login_extranet').insert(users).returning('*');
     // const data = goodUsers.map((user, i) => {
     //   createUser(db, bcrypt, saltRounds, user, i);
     // });
 
-    console.log(reduced);
     // return res.status(200).json([loginData.length, loginData]);
     return res.status(200).json(['Fin pasar users', data]);
   } catch (err) {
