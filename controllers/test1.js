@@ -232,6 +232,29 @@ const handleRepairs = db => async (req, res) => {
   }
 };
 
+const createUser = async (db, bcrypt, saltRounds, user, i) => {
+  const hash = bcrypt.hashSync(user.codigo_contable, saltRounds);
+  try {
+    await db('login_extranet').insert({
+      codigo_contable: user.codigo_contable,
+      codigo: user.codigo,
+      email: user.email,
+      hash: hash,
+      first_time: true,
+    });
+    console.log([
+      `Usuario ${i + 1} creado => email: ${user.email}, hash: ${hash} (${
+        hash.length
+      })`,
+      data,
+    ]);
+    return data;
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+};
+
 module.exports = {
   handleRepairs: handleRepairs,
 };

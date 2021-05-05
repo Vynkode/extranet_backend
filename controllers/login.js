@@ -82,6 +82,29 @@ const handleUpdatePasswordLogin = (db, bcrypt, saltRounds) => async (
   }
 };
 
+const createUser = async (db, bcrypt, saltRounds, user, i) => {
+  const hash = bcrypt.hashSync(user.codigo_contable, saltRounds);
+  try {
+    console.log(
+      `Usuario ${i + 1} creado => email: ${user.email}, hash: ${hash} (${
+        hash.length
+      })`
+    );
+    await db('login_extranet').insert({
+      codigo_contable: user.codigo_contable,
+      codigo: user.codigo,
+      email: user.email,
+      hash: hash,
+      first_time: true,
+    });
+
+    return data;
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+};
+
 const handleCreateAllLogin = (db, bcrypt, saltRounds) => async (req, res) => {
   try {
     console.log('Empezando a pasar users');
@@ -90,41 +113,61 @@ const handleCreateAllLogin = (db, bcrypt, saltRounds) => async (req, res) => {
       .join('clientes as c', 'c.nombre', '=', 'cd.nombre')
       .orderBy('c.codigo_contable');
     console.log(allUsers.length);
+    // console.log(allUsers);
 
-    const goodUsers = allUsers.filter(user => {
-      if (!user.email) {
-        return false;
-      } else {
-        return true;
-      }
-    });
-    console.log(goodUsers.length);
+    // const data = allUsers.map((user, i) => {
+    //   if (!user.email) return;
+    //   const hash = bcrypt.hashSync(user.codigo_contable, saltRounds);
+    //   const newUser = {
+    //     codigo_contable: user.codigo_contable,
+    //     codigo: user.codigo,
+    //     email: user.email.trim(),
+    //     hash: hash,
+    //     first_time: true,
+    //   };
+    //   console.log(`User ${newUser.email} `);
+    //   return db('login_extranet').insert(newUser);
+    // });
 
-    goodUsers.forEach((user, index) => {
-      try {
-        const email = user.email.trim();
+    const reduced = allUsers.reduce(function (filtered, user) {
+      if (user.email) {
         const hash = bcrypt.hashSync(user.codigo_contable, saltRounds);
-        db('login_extranet')
-          .insert({
-            codigo_contable: user.codigo_contable,
-            codigo: user.codigo,
-            email: email,
-            hash: hash,
-            first_time: true,
-          })
-          .then(data =>
-            console.log(
-              `Usuario ${index + 1} creado => email: ${email}, hash: ${hash} (${
-                hash.length
-              })`
-            )
-          )
-          .catch(e => console.log(e));
-      } catch (err) {
-        console.log(err.message);
+        const newUser = {
+          codigo_contable: user.codigo_contable,
+          codigo: user.codigo,
+          email: user.email.trim(),
+          hash: hash,
+          first_time: true,
+        };
+        console.log(`User ${newUser.email} `);
+        filtered.push(newUser);
       }
-    });
-    return res.status(200).json([loginData.length, loginData]);
+      return filtered;
+    }, []);
+
+    // const goodUsers = allUsers.filter(user => {
+    //   if (!user.email) {
+    //     return false;
+    //   } else {
+    //     // const hash = bcrypt.hashSync(user.codigo_contable, saltRounds);
+    //     return {
+    //       codigo_contable: user.codigo_contable,
+    //       codigo: user.codigo,
+    //       email: user.email.trim(),
+    //       hash: '',
+    //       first_time: true,
+    //     };
+    //   }
+    // });
+    console.log(reduced.length);
+    console.log(reduced);
+    // const data = await db('login_extranet').insert(reduced).returning('*');
+    // const data = goodUsers.map((user, i) => {
+    //   createUser(db, bcrypt, saltRounds, user, i);
+    // });
+
+    // return res.status(200).json([loginData.length, loginData]);
+    return res.status(200).json(['Fin pasar users', reduced]);
   } catch (err) {
     console.log(err);
     return res.status(400).json('No se ha podido crear los usuarios');
