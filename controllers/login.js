@@ -177,7 +177,7 @@ const handleCreateAllLogin = (db, bcrypt, saltRounds) => async (req, res) => {
     // console.log(reduced);
     const data = await db('login_extranet')
       .insert(users)
-      .onConflict()
+      .onConflict('pk_login_extranet')
       .ignore()
       .returning('*');
     // const data = goodUsers.map((user, i) => {
