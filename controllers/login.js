@@ -24,12 +24,20 @@ const handleCreateLogin = (db, bcrypt, saltRounds) => async (req, res) => {
   }
 };
 
-const handleUpdateLogin = db => async (req, res) => {
+const handleUpdateLogin = (db, bcrypt, saltRounds) => async (req, res) => {
   const { contable, codigo, email } = req.body;
   try {
+    const hash = bcrypt.hashSync(contable, saltRounds);
     const user = await db('login_extranet')
-      .where({ codigo_contable: contable, codigo: codigo })
-      .update({ email: email })
+      .insert({
+        codigo_contable: contable,
+        codigo: codigo,
+        email: email,
+        hash: hash,
+        first_time: true,
+      })
+      .onConflict(['codigo_contable', 'codigo'])
+      .merge()
       .returning(['codigo_contable', 'codigo', 'email']);
     if (!user.length) throw new Error();
     console.log(user);
