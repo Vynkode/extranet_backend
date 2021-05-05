@@ -130,7 +130,7 @@ const handleCreateAllLogin = (db, bcrypt, saltRounds) => async (req, res) => {
     // });
 
     const reduced = allUsers.reduce(function (filtered, user) {
-      if (user.email) {
+      if (user.email && user.codigo_contable) {
         const hash = bcrypt.hashSync(user.codigo_contable, saltRounds);
         const newUser = {
           codigo_contable: user.codigo_contable,
