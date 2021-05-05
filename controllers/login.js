@@ -160,14 +160,15 @@ const handleCreateAllLogin = (db, bcrypt, saltRounds) => async (req, res) => {
     //   }
     // });
     console.log(reduced.length);
-    console.log(reduced);
-    // const data = await db('login_extranet').insert(reduced).returning('*');
+    // console.log(reduced);
+    const data = await db('login_extranet').insert(reduced).returning('*');
     // const data = goodUsers.map((user, i) => {
     //   createUser(db, bcrypt, saltRounds, user, i);
     // });
 
+    console.log(reduced);
     // return res.status(200).json([loginData.length, loginData]);
-    return res.status(200).json(['Fin pasar users', reduced]);
+    return res.status(200).json(['Fin pasar users', data]);
   } catch (err) {
     console.log(err);
     return res.status(400).json('No se ha podido crear los usuarios');
