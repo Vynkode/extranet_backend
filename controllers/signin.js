@@ -42,10 +42,7 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
       .from('login_extranet')
       .where('email', '=', email);
     if (!login.email) throw new Error();
-    console.log(login);
     const isValid = bcrypt.compareSync(password, login.hash);
-    // let user;
-    console.log(isValid);
     if (isValid) {
       const [user] = await db
         .select(
@@ -69,14 +66,12 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
         .andWhere('cd.codigo', '=', login.codigo)
         .andWhere('c.codigo_contable', '=', login.codigo_contable)
         .join('clientes as c', 'cd.nombre', '=', 'c.nombre');
-      console.log(user);
       user.id = `${user.codigo_contable}${user.codigo}`;
       delete user.codigo;
       delete user.codigo_contable;
-      console.log(user);
       user.first_time = login.first_time;
-      console.log(user);
-      // if (!user.distribuidor) user.nombre = user.nombre.split('-')[0].trim();
+      if (!user.distribuidor) user.nombre = user.nombre.split('-')[0].trim();
+      console.log(user.nombre);
       console.log(
         `${moment().format(
           'YYYY-MM-DD hh:mm:ss.SSS'
