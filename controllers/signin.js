@@ -71,7 +71,6 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
         delete data[0].codigo_contable;
         console.log(data[0]);
         user = data[0];
-        console.log(user);
       } catch (e) {
         return res.status(400).json('unable to get user');
       }
