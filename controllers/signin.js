@@ -69,6 +69,7 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
         .andWhere('cd.codigo', '=', login.codigo)
         .andWhere('c.codigo_contable', '=', login.codigo_contable)
         .join('clientes as c', 'cd.nombre', '=', 'c.nombre');
+      console.log(user);
       user.id = `${user.codigo_contable}${user.codigo}`;
       delete user.codigo;
       delete user.codigo_contable;
