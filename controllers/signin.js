@@ -45,6 +45,7 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
     console.log(login);
     const isValid = bcrypt.compareSync(password, login.hash);
     // let user;
+    console.log(isValid);
     if (isValid) {
       const [user] = await db
         .select(
