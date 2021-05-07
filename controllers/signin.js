@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const handleSignin = (db, bcrypt) => async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -32,13 +34,13 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
   // } catch (err) {
   //   return res.status(400).json(['wrong credentials', err]);
   // }
+
   // SIGNIN LOGIN_EXTRANET
   try {
     const [login] = await db
       .select('codigo_contable', 'email', 'codigo', 'hash')
       .from('login_extranet')
       .where('email', '=', email);
-    console.log(login);
     if (!login.email) throw new Error();
     const isValid = bcrypt.compareSync(password, login.hash);
     // let user;
@@ -68,9 +70,18 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
       user.id = `${user.codigo_contable}${user.codigo}`;
       delete user.codigo;
       delete user.codigo_contable;
-      console.log(user);
+      console.log(
+        `${moment().format(
+          'YYYY-MM-DD hh:mm:ss.SSS'
+        )}: Acceso correcto del usuario ${user.id}`
+      );
       return res.status(200).json(user);
     } else {
+      console.log(
+        `${moment().format(
+          'YYYY-MM-DD hh:mm:ss.SSS'
+        )}: Acceso erroneo del usuario ${user.id}`
+      );
       return res.status(400).json('wrong credentials');
     }
   } catch (e) {
