@@ -41,7 +41,7 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
     console.log(login);
     if (!login.email) throw new Error();
     const isValid = bcrypt.compareSync(password, login.hash);
-    let user;
+    // let user;
     if (isValid) {
       const data = await db
         .select(
@@ -69,8 +69,8 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
       delete data[0].codigo;
       delete data[0].codigo_contable;
       console.log(data[0]);
-      user = data[0];
-      return res.status(200).json(user);
+      // user = data[0];
+      return res.status(200).json(data[0]);
     } else {
       return res.status(400).json('wrong credentials');
     }
