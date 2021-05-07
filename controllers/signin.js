@@ -71,7 +71,8 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
       delete user.codigo;
       delete user.codigo_contable;
       user.first_time = login.first_time;
-      if (!user.distribuidor) user.nombre = user.nombre.split('-')[0].trim();
+      console.log(user);
+      // if (!user.distribuidor) user.nombre = user.nombre.split('-')[0].trim();
       console.log(
         `${moment().format(
           'YYYY-MM-DD hh:mm:ss.SSS'
