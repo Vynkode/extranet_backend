@@ -38,7 +38,7 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
   // SIGNIN LOGIN_EXTRANET
   try {
     const [login] = await db
-      .select('codigo_contable', 'email', 'codigo', 'hash')
+      .select('codigo_contable', 'email', 'codigo', 'hash', 'first_time')
       .from('login_extranet')
       .where('email', '=', email);
     if (!login.email) throw new Error();
@@ -70,6 +70,7 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
       user.id = `${user.codigo_contable}${user.codigo}`;
       delete user.codigo;
       delete user.codigo_contable;
+      user.first_time = login.first_time;
       console.log(
         `${moment().format(
           'YYYY-MM-DD hh:mm:ss.SSS'
