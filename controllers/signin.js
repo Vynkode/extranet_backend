@@ -43,7 +43,7 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
     const isValid = bcrypt.compareSync(password, login.hash);
     // let user;
     if (isValid) {
-      const data = await db
+      const [user] = await db
         .select(
           'cd.codigo',
           'c.codigo_contable',
@@ -65,12 +65,11 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
         .andWhere('cd.codigo', '=', login.codigo)
         .andWhere('c.codigo_contable', '=', login.codigo_contable)
         .join('clientes as c', 'cd.nombre', '=', 'c.nombre');
-      data[0].id = `${data[0].codigo_contable}${data[0].codigo}`;
-      delete data[0].codigo;
-      delete data[0].codigo_contable;
-      console.log(data[0]);
-      // user = data[0];
-      return res.status(200).json(data[0]);
+      user.id = `${user.codigo_contable}${user.codigo}`;
+      delete user.codigo;
+      delete user.codigo_contable;
+      console.log(user);
+      return res.status(200).json(user);
     } else {
       return res.status(400).json('wrong credentials');
     }
