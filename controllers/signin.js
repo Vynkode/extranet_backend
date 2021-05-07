@@ -44,7 +44,7 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
     let user;
     if (isValid) {
       try {
-        const [data] = await db
+        const data = await db
           .select(
             'cd.codigo',
             'c.codigo_contable',
@@ -66,11 +66,12 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
           .andWhere('cd.codigo', '=', login.codigo)
           .andWhere('c.codigo_contable', '=', login.codigo_contable)
           .join('clientes as c', 'cd.nombre', '=', 'c.nombre');
-        data.id = `${data.codigo_contable}${data.codigo}`;
-        delete data.codigo;
-        delete data.codigo_contable;
-        console.log(data);
-        user = data;
+        data[0].id = `${data.codigo_contable}${data.codigo}`;
+        delete data[0].codigo;
+        delete data[0].codigo_contable;
+        console.log(data[0]);
+        user = data[0];
+        console.log(user);
       } catch (e) {
         return res.status(400).json('unable to get user');
       }

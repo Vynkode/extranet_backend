@@ -3,23 +3,28 @@ const moment = require('moment');
 const reparaciones = db => (req, res) => {
   const obs = [];
   db('reparaciones')
-    .select('*')
+    .select('codigo_contable', 'codigo_envio', 'proceso', 'numero')
+    .where('proceso', '=', '8')
+    .where('operario', '!=', 'INMA')
+    .where('codigo_envio', '=', '00')
+    .where('codigo_contable', '=', '43000014')
+    .orderBy('codigo_contable')
     // .where('numero', '=', '1240300')
-    .limit(100)
+    // .limit(100)
     .then(data => {
-      data.forEach(d => {
-        const accesorios = [
-          d.accesorio1 ? d.accesorio1 : '',
-          d.accesorio2 ? d.accesorio2 : '',
-          d.accesorio3 ? d.accesorio3 : '',
-          d.accesorio4 ? d.accesorio4 : '',
-          d.accesorio5 ? d.accesorio5 : '',
-        ];
-
-        // const date = moment(data[0].f_reparacion).format('DD/MM/YY');
-        d.accesorios = accesorios;
-      });
-      res.status(200).json(data);
+      // data.forEach(d => {
+      //   const accesorios = [
+      //     d.accesorio1 ? d.accesorio1 : '',
+      //     d.accesorio2 ? d.accesorio2 : '',
+      //     d.accesorio3 ? d.accesorio3 : '',
+      //     d.accesorio4 ? d.accesorio4 : '',
+      //     d.accesorio5 ? d.accesorio5 : '',
+      //   ];
+      //
+      //   // const date = moment(data[0].f_reparacion).format('DD/MM/YY');
+      //   d.accesorios = accesorios;
+      // });
+      res.status(200).json([data.length, data]);
     })
     // if(data[0].observaciones) {
     //   console.log(data);

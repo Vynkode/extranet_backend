@@ -7,7 +7,7 @@ const handleRepairs = db => async (req, res) => {
   // console.log(status);
   let find;
   if (status === '8') find = '=';
-  if (status !== '8') find = '!=';
+  if (status === '0') find = '!=';
   // console.log(`proceso ${find} 8`);
 
   try {

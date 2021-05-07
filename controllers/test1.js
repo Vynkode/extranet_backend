@@ -2,7 +2,12 @@ const moment = require('moment');
 
 const handleRepairs = db => async (req, res) => {
   // console.log(req.params);
-  const { codigo, dir, status } = req.query;
+  const { codigo, dir, status } = req.body;
+
+  let find;
+  if (status === '8') find = '=';
+  if (status === '0') find = '!=';
+  console.log(typeof status);
 
   try {
     const repairs = await db('reparaciones as r')
@@ -49,16 +54,19 @@ const handleRepairs = db => async (req, res) => {
           .where('r.codigo_contable', '=', codigo)
           .where('r.codigo_envio', '=', dir)
           .where('r.operario', '!=', 'INMA')
-          .where('r.proceso', '=', status);
+          .where(
+            db.raw(
+              typeof status === 'string'
+                ? `r.proceso ${find} 8`
+                : `(r.proceso = ${status[0]} or r.proceso = ${status[1]})`
+            )
+          );
       })
       .orderBy('r.f_entrada', 'desc');
 
     const count = repairs.length;
     // console.log(count);
-    if (!count)
-      return res
-        .status(202)
-        .json(['No se han encontrado reparaciones', 'Count vacio']);
+    if (!count) return res.status(202).json([count, repairs]);
     repairs.forEach(element => {
       if (element.foto_entrada) {
         element.foto_entrada = Buffer.from(element.foto_entrada).toString(
@@ -152,17 +160,17 @@ const handleRepairs = db => async (req, res) => {
 
       if (element.f_reparacion) {
         element.f_reparacion = moment(element.f_reparacion).format('DD/MM/YY');
-        element.accesorios = [];
-        if (element.acc1 && element.accesorio1)
-          element.accesorios.push(element.accesorio1);
-        if (element.acc2 && element.accesorio2)
-          element.accesorios.push(element.accesorio2);
-        if (element.acc3 && element.accesorio3)
-          element.accesorios.push(element.accesorio3);
-        if (element.acc4 && element.accesorio4)
-          element.accesorios.push(element.accesorio4);
-        if (element.acc5 && element.accesorio5)
-          element.accesorios.push(element.accesorio5);
+        // element.accesorios = [];
+        // if (element.acc1 && element.accesorio1)
+        //   element.accesorios.push(element.accesorio1);
+        // if (element.acc2 && element.accesorio2)
+        //   element.accesorios.push(element.accesorio2);
+        // if (element.acc3 && element.accesorio3)
+        //   element.accesorios.push(element.accesorio3);
+        // if (element.acc4 && element.accesorio4)
+        //   element.accesorios.push(element.accesorio4);
+        // if (element.acc5 && element.accesorio5)
+        //   element.accesorios.push(element.accesorio5);
       } else {
         element.f_reparacion = null;
       }
