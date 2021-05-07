@@ -42,6 +42,7 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
       .from('login_extranet')
       .where('email', '=', email);
     if (!login.email) throw new Error();
+    console.log(login);
     const isValid = bcrypt.compareSync(password, login.hash);
     // let user;
     if (isValid) {
