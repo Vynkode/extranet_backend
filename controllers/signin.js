@@ -43,41 +43,37 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
     const isValid = bcrypt.compareSync(password, login.hash);
     let user;
     if (isValid) {
-      try {
-        const data = await db
-          .select(
-            'cd.codigo',
-            'c.codigo_contable',
-            'cd.nombre',
-            'c.razon_social',
-            'c.nif',
-            'cd.email',
-            'cd.telefono1',
-            'cd.calle',
-            'cd.distrito',
-            'cd.ciudad',
-            'cd.provincia',
-            'cd.contacto',
-            'cd.fax',
-            'c.distribuidor'
-          )
-          .from('clientes_direcciones as cd')
-          .where('cd.email', '=', email)
-          .andWhere('cd.codigo', '=', login.codigo)
-          .andWhere('c.codigo_contable', '=', login.codigo_contable)
-          .join('clientes as c', 'cd.nombre', '=', 'c.nombre');
-        data[0].id = `${data[0].codigo_contable}${data[0].codigo}`;
-        delete data[0].codigo;
-        delete data[0].codigo_contable;
-        console.log(data[0]);
-        user = data[0];
-      } catch (e) {
-        return res.status(400).json('unable to get user');
-      }
+      const data = await db
+        .select(
+          'cd.codigo',
+          'c.codigo_contable',
+          'cd.nombre',
+          'c.razon_social',
+          'c.nif',
+          'cd.email',
+          'cd.telefono1',
+          'cd.calle',
+          'cd.distrito',
+          'cd.ciudad',
+          'cd.provincia',
+          'cd.contacto',
+          'cd.fax',
+          'c.distribuidor'
+        )
+        .from('clientes_direcciones as cd')
+        .where('cd.email', '=', email)
+        .andWhere('cd.codigo', '=', login.codigo)
+        .andWhere('c.codigo_contable', '=', login.codigo_contable)
+        .join('clientes as c', 'cd.nombre', '=', 'c.nombre');
+      data[0].id = `${data[0].codigo_contable}${data[0].codigo}`;
+      delete data[0].codigo;
+      delete data[0].codigo_contable;
+      console.log(data[0]);
+      user = data[0];
+      return res.status(200).json(user);
     } else {
       return res.status(400).json('wrong credentials');
     }
-    return res.status(200).json(user);
   } catch (e) {
     return res.status(400).json('wrong credentials');
   }
