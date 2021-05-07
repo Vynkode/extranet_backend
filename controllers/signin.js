@@ -77,7 +77,7 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
     } else {
       return res.status(400).json('wrong credentials');
     }
-    return res.status(205).json(user);
+    return res.status(200).json(user);
   } catch (e) {
     return res.status(400).json('wrong credentials');
   }
