@@ -54,7 +54,7 @@ const handleRepairs = db => async (req, res) => {
         builder
           .where('r.codigo_contable', '=', codigo)
           .where('r.codigo_envio', '=', dir)
-          .where('r.operario', '!=', 'INMA')
+          .where(db.raw('(r.operario != INMA or r.operario is null)'))
           .where('r.proceso', find, 8);
       })
       .limit(100)
