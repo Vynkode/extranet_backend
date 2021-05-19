@@ -23,6 +23,7 @@ const handleRepairs = db => async (req, res) => {
         'r.marca',
         'r.modelo',
         'r.tipo_aparato',
+        'r.ref2',
         'r.averia',
         'r.observaciones',
         'r.presupuestar',
