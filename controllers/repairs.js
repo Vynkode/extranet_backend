@@ -220,8 +220,7 @@ const handleRepairs = db => async (req, res) => {
       if (element.proceso === 3) element.procesoEstado = 'PDTE RESPUESTA';
       if (element.proceso === 5 || element.proceso === 9)
         element.procesoEstado = 'PDTE MATERIAL';
-      if (element.proceso === 6)
-        element.procesoEstado = 'REPARACION FINALIZADA';
+      if (element.proceso === 6) element.procesoEstado = 'FINALIZADA';
       if (element.proceso === 8 && element.estado === 99)
         element.procesoEstado = 'PDTE RECOGER';
       if (element.proceso === 8 && element.estado === 102)
