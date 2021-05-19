@@ -74,7 +74,7 @@ const handleRepairs = db => async (req, res) => {
         element.tipo_reparacion = 'No Garantía';
         element.fecha_compra = null;
       }
-      if (element.tipo_reparacion === '2') {
+      if (element.tipo_reparacion !== '1') {
         element.tipo_reparacion = 'Garantía';
         element.fecha_compra = moment(element.fecha_compra).format('DD/MM/YY');
       }
