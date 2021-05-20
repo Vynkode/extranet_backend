@@ -9,6 +9,7 @@ const handleAcceptBudget = (db, bcrypt) => async (req, res) => {
       .where('numero', '=', numero)
       .update({
         f_respuesta_ppto: date,
+        estado: 4,
         // ultima_modificacion: modDate
       })
       .returning(['numero', 'f_respuesta_ppto']);
@@ -36,6 +37,7 @@ const handleRejectBudget = (db, bcrypt) => async (req, res) => {
         f_respuesta_ppto: date,
         // ultima_modificacion: modDate,
         rechazado: 'S',
+        estado: 4,
       })
       .returning(['numero', 'f_respuesta_ppto', 'rechazado']);
     // console.log([modDate, date]);
