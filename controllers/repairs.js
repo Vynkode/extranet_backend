@@ -141,13 +141,13 @@ const handleRepairs = db => async (req, res) => {
         element.rechazado = 'Sí';
       }
 
-      const presupuestoString = element.presupuesto
-        ? element.presupuesto.toString()
-        : '';
-      if (presupuestoString) {
+      // const presupuestoString = element.presupuesto
+      //   ? element.presupuesto.toString()
+      //   : '';
+      if (element.presupuesto) {
         element.presupuesto =
-          presupuestoString[0].toUpperCase() +
-          presupuestoString.slice(1).toLowerCase();
+          element.presupuesto[0].toUpperCase() +
+          element.presupuesto.slice(1).toLowerCase();
       } else {
         element.presupuesto = '';
       }
