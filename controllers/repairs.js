@@ -86,21 +86,18 @@ const handleRepairs = db => async (req, res) => {
 
       element.f_entrada = moment(element.f_entrada).format('DD/MM/YY');
 
-      const averiaString = element.averia ? element.averia.toString() : '';
-      if (averiaString) {
+      if (element.averia) {
         element.averia =
-          averiaString[0].toUpperCase() + averiaString.slice(1).toLowerCase();
+          element.averia[0].toUpperCase() +
+          element.averia.slice(1).toLowerCase();
       } else {
         element.averia = '';
       }
 
-      const observacionesString = element.observaciones
-        ? element.observaciones.toString()
-        : '';
-      if (observacionesString) {
+      if (element.observaciones) {
         element.observaciones =
-          observacionesString[0].toUpperCase() +
-          observacionesString.slice(1).toLowerCase();
+          element.observaciones[0].toUpperCase() +
+          element.observaciones.slice(1).toLowerCase();
       } else {
         element.observaciones = '';
       }
@@ -141,9 +138,6 @@ const handleRepairs = db => async (req, res) => {
         element.rechazado = 'Sí';
       }
 
-      // const presupuestoString = element.presupuesto
-      //   ? element.presupuesto.toString()
-      //   : '';
       if (element.presupuesto) {
         element.presupuesto =
           element.presupuesto[0].toUpperCase() +
@@ -180,13 +174,10 @@ const handleRepairs = db => async (req, res) => {
         'accesorio5',
       ].forEach(k => delete element[k]);
 
-      const reparacionString = element.reparacion
-        ? element.reparacion.toString()
-        : '';
-      if (reparacionString) {
+      if (element.reparacion) {
         element.reparacion =
-          reparacionString[0].toUpperCase() +
-          reparacionString.slice(1).toLowerCase();
+          element.reparacion[0].toUpperCase() +
+          element.reparacion.slice(1).toLowerCase();
       } else {
         element.reparacion = '';
       }
