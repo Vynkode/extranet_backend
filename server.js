@@ -10,7 +10,6 @@ const signin = require('./controllers/signin');
 const repairs = require('./controllers/repairs');
 const repairBudget = require('./controllers/repairBudget');
 const profile = require('./controllers/profile');
-// const image = require('./controllers/image');
 const converter = require('./controllers/converter');
 const login = require('./controllers/login');
 const test = require('./controllers/test');
@@ -56,8 +55,6 @@ app.get('/profile/:id', (req, res) => {
 
 //Repairs routes
 app.get('/repairs', repairs.handleRepairs(db));
-// app.get('/repairsworkshop/:email', repairs.handleWorkshopRepairs(db));
-// app.get('/repairsclosed/:email', repairs.handleClosedRepairs(db));
 
 // Budget repair routes
 app.post('/budgetaccept', repairBudget.handleAcceptBudget(db, bcrypt));
