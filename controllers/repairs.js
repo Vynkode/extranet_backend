@@ -210,6 +210,10 @@ const handleRepairs = db => async (req, res) => {
         element.procesoEstado = 'EN REPARACIÓN';
       if (element.proceso === 2) element.procesoEstado = 'PTO DISPONIBLE';
       if (element.proceso === 3) element.procesoEstado = 'PDTE RESPUESTA';
+      if (element.proceso === 3 && element.estado === 3)
+        element.procesoEstado = 'RECHAZADO';
+      if (element.proceso === 3 && element.estado === 4)
+        element.procesoEstado = 'ACEPTADO';
       if (element.proceso === 5 || element.proceso === 9)
         element.procesoEstado = 'PDTE MATERIAL';
       if (element.proceso === 6) element.procesoEstado = 'FINALIZADA';
