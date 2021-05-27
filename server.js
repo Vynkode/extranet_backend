@@ -5,7 +5,7 @@ const saltRounds = 10;
 const cors = require('cors');
 const knex = require('knex');
 
-const auth = require('./controllers/auth');
+// const auth = require('./controllers/auth');
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const repairs = require('./controllers/repairs');
