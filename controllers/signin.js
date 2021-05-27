@@ -103,11 +103,6 @@ const handleSigninToken = db => async (req, res) => {
       return res.status(401).json('Invalid token');
     }
   }
-
-  //     return res.status(200).json({ user, token });
-  //   } else {
-  //     console.log(`${date}: Acceso erroneo del usuario ${user.id}`);
-  //     return res.status(400).json('wrong credentials');
 };
 
 module.exports = {
