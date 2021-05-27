@@ -42,7 +42,9 @@ const handleSignin = (db, bcrypt) => async (req, res) => {
       delete user.codigo_contable;
       user.first_time = login.first_time;
       if (!user.distribuidor) user.nombre = user.nombre.split('-')[0].trim();
-      const token = jwt.sign({ id: user.id }, 'secretmgvsecret');
+      const token = jwt.sign({ id: user.id }, 'secretmgvsecret', {
+        expiresIn: '10s',
+      });
       console.log(`${date}: Acceso correcto del usuario ${user.id}`);
       return res.status(200).json({ user, token });
     } else {
