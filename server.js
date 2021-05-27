@@ -5,6 +5,7 @@ const saltRounds = 10;
 const cors = require('cors');
 const knex = require('knex');
 
+const auth = require('./controllers/auth');
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const repairs = require('./controllers/repairs');
@@ -43,6 +44,9 @@ app.get('/', (req, res) => {
 });
 
 //Register and Signin routes
+
+// app.get('/auth', (req, res) => auth.auth(req, res));
+app.get('/signintoken', signin.handleSigninToken(db));
 app.post('/signin', signin.handleSignin(db, bcrypt));
 app.post('/register', (req, res) => {
   register.handleRegister(req, res, db, bcrypt);
