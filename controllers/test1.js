@@ -245,8 +245,8 @@ const handleRepairs = db => async (req, res) => {
   let procesoRaw;
   if (status === '8' || status === '0')
     procesoRaw = [`r.proceso ${status === '8' ? '=' : '!='} ?`, '8'];
-  if (status === '4')
-    procesoRaw = [`(r.proceso = ? or r.proceso = ?)`, ['3', '4']];
+  if (status === '2')
+    procesoRaw = [`(r.proceso = ? or r.proceso = ?)`, ['2', '3']];
 
   try {
     const repairs = await db('reparaciones as r')
