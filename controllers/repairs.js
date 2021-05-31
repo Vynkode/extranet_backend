@@ -77,12 +77,19 @@ const handleRepairs = db => async (req, res) => {
       }
       if (element.tipo_reparacion !== '1') {
         element.tipo_reparacion = 'Garantía';
-        element.fecha_compra = moment(element.fecha_compra).format('DD/MM/YY');
+        if (element.fecha_compra)
+          element.fecha_compra = moment(element.fecha_compra).format(
+            'DD/MM/YY'
+          );
+        if (!element.fecha_compra)
+          element.fecha_compra = moment(element.fecha_compra).format(
+            'DD/MM/YY'
+          );
       }
-      if (element.tipo_reparacion === '3') {
-        element.tipo_reparacion = 'Reclamación';
-        element.fecha_compra = null;
-      }
+      // if (element.tipo_reparacion === '3') {
+      //   element.tipo_reparacion = 'Reclamación';
+      //   element.fecha_compra = null;
+      // }
 
       element.f_entrada = moment(element.f_entrada).format('DD/MM/YY');
 
