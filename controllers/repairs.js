@@ -1,14 +1,12 @@
 const moment = require('moment');
 
 const handleRepairs = db => async (req, res) => {
-  // console.log(req.query);
   let { codigo, dir, status } = req.query;
-  // status = Number(status);
-  // console.log(status);
-  let find;
-  if (status === '8') find = '=';
-  if (status === '0') find = '!=';
-  // console.log(`proceso ${find} 8`);
+  let procesoRaw;
+  if (status === '8' || status === '0')
+    procesoRaw = [`r.proceso ${status === '8' ? '=' : '!='} ?`, '8'];
+  if (status === '2')
+    procesoRaw = [`(r.proceso = ? or r.proceso = ?)`, ['2', '3']];
 
   try {
     const repairs = await db('reparaciones as r')
@@ -56,7 +54,7 @@ const handleRepairs = db => async (req, res) => {
           .where('r.codigo_contable', '=', codigo)
           .where('r.codigo_envio', '=', dir)
           .whereRaw('(r.operario != ? or r.operario is null)', 'INMA')
-          .where('r.proceso', find, 8);
+          .whereRaw(procesoRaw[0], procesoRaw[1]);
       })
       .limit(100)
       .orderBy('r.f_entrada', 'desc');
