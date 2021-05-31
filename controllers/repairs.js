@@ -62,7 +62,6 @@ const handleRepairs = db => async (req, res) => {
       .orderBy('r.f_entrada', 'desc');
 
     const count = repairs.length;
-    console.log(count);
     if (!count) return res.status(202).json([count, repairs]);
     repairs.forEach(element => {
       if (element.foto_entrada) {
