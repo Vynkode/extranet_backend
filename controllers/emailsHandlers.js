@@ -1,10 +1,9 @@
 const { JWT } = require('google-auth-library');
-const keys = require('key2.json');
 
 async function initServiceClient() {
   return new JWT({
     email: 'extranetemail@extranet-296817.iam.gserviceaccount.com',
-    key: keys.private_key.replace(/\\n/g, '\n'),
+    key: process.env.PRIVATE_KEY_GOOGLE.replace(/\\n/g, '\n'),
     scopes: ['https://mail.google.com/'],
     subject: 'info@mgvwatch.com',
   });
