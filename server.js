@@ -61,8 +61,8 @@ app.get('/profile/:id', (req, res) => {
 app.get('/repairs', repairs.handleRepairs(db));
 
 // Budget repair routes
-app.post('/budgetaccept', repairBudget.handleAcceptBudget(db, bcrypt));
-app.post('/budgetreject', repairBudget.handleRejectBudget(db, bcrypt));
+app.post('/budgetaccept', repairBudget.handleAcceptBudget(db));
+app.post('/budgetreject', repairBudget.handleRejectBudget(db));
 
 //Create and update users for login table
 app.get('/createlogin', login.handleCreateLogin(db, bcrypt, saltRounds));

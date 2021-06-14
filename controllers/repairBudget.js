@@ -1,6 +1,8 @@
 const moment = require('moment');
 
-const handleAcceptBudget = (db, bcrypt) => async (req, res) => {
+const { sendEmail } = require('./emailsHandlers');
+
+const handleAcceptBudget = db => async (req, res) => {
   const { numero } = req.body;
   const date = moment().format('YYYY-MM-DD');
   try {
@@ -13,6 +15,7 @@ const handleAcceptBudget = (db, bcrypt) => async (req, res) => {
       .returning(['numero', 'f_respuesta_ppto']);
     if (!repair.length)
       throw new Error('No se ha podido actualizar correctamente la reparación');
+    await sendEmail({ message: `Han aceptado la reparación ${numero}` });
     return res
       .status(200)
       .json(
@@ -23,7 +26,7 @@ const handleAcceptBudget = (db, bcrypt) => async (req, res) => {
   }
 };
 
-const handleRejectBudget = (db, bcrypt) => async (req, res) => {
+const handleRejectBudget = db => async (req, res) => {
   const { numero } = req.body;
   const date = moment().format('YYYY-MM-DD');
   try {
