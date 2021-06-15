@@ -16,6 +16,7 @@ const handleAcceptBudget = db => async (req, res) => {
     if (!repair.length)
       throw new Error('No se ha podido actualizar correctamente la reparación');
     await sendEmail({
+      subject: `Reparación ${repair[0].numero}`,
       message: `El presupuesto ${repair[0].numero} se ha aceptado a fecha ${date}`,
     });
     return res
@@ -43,6 +44,7 @@ const handleRejectBudget = db => async (req, res) => {
     if (!repair.length)
       throw new Error('No se ha podido actualizar correctamente la reparación');
     await sendEmail({
+      subject: `Reparación ${repair[0].numero}`,
       message: `El presupuesto ${repair[0].numero} se ha rechazado a fecha ${date}`,
     });
     return res
