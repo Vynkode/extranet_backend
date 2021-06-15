@@ -15,9 +15,9 @@ const handleAcceptBudget = db => async (req, res) => {
       .returning(['numero', 'f_respuesta_ppto']);
     if (!repair.length)
       throw new Error('No se ha podido actualizar correctamente la reparación');
-    // await sendEmail({
-    //   message: `El presupuesto ${repair[0].numero} se ha aceptado a fecha ${date}`,
-    // });
+    await sendEmail({
+      message: `El presupuesto ${repair[0].numero} se ha aceptado a fecha ${date}`,
+    });
     return res
       .status(200)
       .json(
@@ -42,6 +42,9 @@ const handleRejectBudget = db => async (req, res) => {
       .returning(['numero', 'f_respuesta_ppto', 'rechazado']);
     if (!repair.length)
       throw new Error('No se ha podido actualizar correctamente la reparación');
+    await sendEmail({
+      message: `El presupuesto ${repair[0].numero} se ha rechazado a fecha ${date}`,
+    });
     return res
       .status(200)
       .json(
