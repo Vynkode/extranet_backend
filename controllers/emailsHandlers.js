@@ -27,10 +27,10 @@ async function sendRawEmail(emailBody) {
 const field = (f, v) => (v ? f + ': ' + v + '\r\n' : '');
 
 module.exports.sendEmail = async function ({
-  to = 'kevinmuqu@gmail.com',
+  to = 'info@mgvwatch.com',
   cc = undefined,
   bcc = undefined,
-  subject = 'Prueba email',
+  subject = '',
   message = '',
 } = {}) {
   if (!to) {
