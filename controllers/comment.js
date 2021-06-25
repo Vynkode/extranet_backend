@@ -11,9 +11,9 @@ const handleComment = async (req, res) => {
     });
     res
       .status(201)
-      .send(`Su comentario de la reparación ${numero} ha sido enviado`);
+      .json(`Su comentario de la reparación ${numero} ha sido enviado`);
   } catch (e) {
-    res.status(401).send(e);
+    res.status(401).json(e);
   }
 };
 
