@@ -12,7 +12,6 @@ async function initServiceClient() {
 async function sendRawEmail(emailBody) {
   const client = await initServiceClient();
 
-  // see https://github.com/googleapis/gaxios
   const options = {
     method: 'POST',
     url: `https://gmail.googleapis.com/upload/gmail/v1/users/me/messages/send`,
@@ -26,7 +25,7 @@ async function sendRawEmail(emailBody) {
 
 const field = (f, v) => (v ? f + ': ' + v + '\r\n' : '');
 
-module.exports.sendEmail = async function ({
+const sendEmail = async function ({
   to = 'info@mgvwatch.com',
   cc = undefined,
   bcc = undefined,
@@ -43,3 +42,23 @@ module.exports.sendEmail = async function ({
   )}${field('bcc', bcc)}\r\n${message}`;
   return sendRawEmail(email);
 };
+
+const sendComment = async function ({
+  to = 'info@mgvwatch.com',
+  cc = undefined,
+  bcc = undefined,
+  subject = '',
+  message = '',
+} = {}) {
+  if (!to) {
+    throw new Error('"To" field is required');
+  }
+
+  const email = `${field('Subject', subject)}${field('To', to)}${field(
+    'cc',
+    cc
+  )}${field('bcc', bcc)}\r\n${message}`;
+  return sendRawEmail(email);
+};
+
+module.exports = { sendEmail, sendComment };

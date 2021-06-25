@@ -10,6 +10,7 @@ const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const repairs = require('./controllers/repairs');
 const repairBudget = require('./controllers/repairBudget');
+const repairComment = require('./controllers/comment');
 const profile = require('./controllers/profile');
 const converter = require('./controllers/converter');
 const login = require('./controllers/login');
@@ -20,7 +21,6 @@ const db = knex({
   // connect to your own database here
   client: 'pg',
   connection: {
-    // connectionString: process.env.DATABASE_URL,
     connectionString: process.env.HEROKU_POSTGRESQL_SILVER_URL,
     ssl: {
       rejectUnauthorized: false,
@@ -63,6 +63,9 @@ app.get('/repairs', repairs.handleRepairs(db));
 // Budget repair routes
 app.post('/budgetaccept', repairBudget.handleAcceptBudget(db));
 app.post('/budgetreject', repairBudget.handleRejectBudget(db));
+
+// Comment route
+app.post('/repair/comment', repairComment.handleComment);
 
 //Create and update users for login table
 app.get('/createlogin', login.handleCreateLogin(db, bcrypt, saltRounds));
